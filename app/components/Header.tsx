@@ -51,11 +51,11 @@ export function HeaderMenu({
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
-  const className = `header-menu-${viewport}`;
+  //const className = `header-menu-${viewport}`;
   const {close} = useAside();
 
   return (
-    <nav className={className} role="navigation">
+    <nav className="border-black border flex" role="navigation">
       {viewport === 'mobile' && (
         <NavLink
           end
