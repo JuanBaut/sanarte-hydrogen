@@ -59,8 +59,8 @@ export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
     <div className="home">
-      {/*<FeaturedCollection collection={data.featuredCollection} />*/}
-      {/*<RecommendedProducts products={data.recommendedProducts} />*/}
+      <FeaturedCollection collection={data.featuredCollection} />
+      <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );
 }
@@ -93,19 +93,15 @@ function RecommendedProducts({
   products: Promise<RecommendedProductsQuery | null>;
 }) {
   return (
-    <div className="recommended-products">
-      <h2>Recommended Products</h2>
+    <div>
+      <h2 className="font-playwrite text-2xl">Recommended Products</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
           {(response) => (
-            <div className="recommended-products-grid">
+            <div className="border-red-400">
               {response
                 ? response.products.nodes.map((product) => (
-                    <Link
-                      key={product.id}
-                      className="recommended-product"
-                      to={`/products/${product.handle}`}
-                    >
+                    <Link key={product.id} to={`/products/${product.handle}`}>
                       <Image
                         data={product.images.nodes[0]}
                         aspectRatio="1/1"

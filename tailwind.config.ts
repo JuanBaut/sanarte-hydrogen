@@ -2,9 +2,13 @@ import type {Config} from 'tailwindcss';
 
 export default {
   darkMode: ['class'],
-  content: ['./app/**/*.{js,jsx,ts,tsx}'],
+  content: ['./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        playwrite: ['Playwrite GB S', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

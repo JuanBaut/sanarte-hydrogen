@@ -12,7 +12,7 @@ import {
   type ShouldRevalidateFunction,
 } from '@remix-run/react';
 import favicon from '~/assets/favicon.svg';
-import stylesheet from '~/tailwind.css?url';
+import styles from '~/tailwind.css?url';
 import {PageLayout} from '~/components/PageLayout';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 
@@ -36,9 +36,13 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
   return defaultShouldRevalidate;
 };
 
+//<link rel="preconnect" href="https://fonts.googleapis.com">
+//<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+//<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">
+
 export function links() {
   return [
-    {rel: 'stylesheet', href: stylesheet},
+    {rel: 'stylesheet', href: styles},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
