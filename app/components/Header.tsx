@@ -25,16 +25,16 @@ export function Header({
 }: HeaderProps) {
   const {shop, menu} = header;
   return (
-    <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
-      </NavLink>
+    <header className="flex justify-between gap-4 p-4 border-b-black border-b">
       <HeaderMenu
         menu={menu}
         viewport="desktop"
         primaryDomainUrl={header.shop.primaryDomain.url}
         publicStoreDomain={publicStoreDomain}
       />
+      <NavLink className="text-xl self-center" prefetch="intent" to="/">
+        <strong>{shop.name}</strong>
+      </NavLink>
       <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
     </header>
   );
@@ -55,7 +55,7 @@ export function HeaderMenu({
   const {close} = useAside();
 
   return (
-    <nav className="border-black border flex" role="navigation">
+    <nav className="flex gap-4 self-center" role="navigation">
       {viewport === 'mobile' && (
         <NavLink
           end
@@ -79,7 +79,6 @@ export function HeaderMenu({
             : item.url;
         return (
           <NavLink
-            className="header-menu-item"
             end
             key={item.id}
             onClick={close}
@@ -100,7 +99,7 @@ function HeaderCtas({
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="header-ctas" role="navigation">
+    <nav className="flex gap-4 self-center" role="navigation">
       <HeaderMenuMobileToggle />
       <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
         <Suspense fallback="Sign in">
@@ -118,11 +117,8 @@ function HeaderCtas({
 function HeaderMenuMobileToggle() {
   const {open} = useAside();
   return (
-    <button
-      className="header-menu-mobile-toggle reset"
-      onClick={() => open('mobile')}
-    >
-      <h3>☰</h3>
+    <button className="hidden" onClick={() => open('mobile')}>
+      open mobile header
     </button>
   );
 }
@@ -130,7 +126,7 @@ function HeaderMenuMobileToggle() {
 function SearchToggle() {
   const {open} = useAside();
   return (
-    <button className="reset" onClick={() => open('search')}>
+    <button className="" onClick={() => open('search')}>
       Search
     </button>
   );

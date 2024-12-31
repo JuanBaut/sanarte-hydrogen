@@ -1,14 +1,21 @@
-import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {Await, useLoaderData, Link, type MetaFunction} from '@remix-run/react';
-import {Suspense} from 'react';
+import {Await, Link, useLoaderData, type MetaFunction} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
+import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {Suspense} from 'react';
 import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '~/components/ui/card';
 
 export const meta: MetaFunction = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [{title: 'SanArte | Home'}];
 };
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -58,8 +65,8 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
-    <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
+    <div>
+      {/*<FeaturedCollection collection={data.featuredCollection} />*/}
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );
@@ -93,24 +100,37 @@ function RecommendedProducts({
   products: Promise<RecommendedProductsQuery | null>;
 }) {
   return (
-    <div>
-      <h2 className="font-playwrite text-2xl">Recommended Products</h2>
+    <div className="m-8 h-min space-y-4">
+      <h2 className="font-playwrite font-normal text-2xl">
+        Recommended Products
+      </h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
           {(response) => (
-            <div className="border-red-400">
+            <div className="flex gap-4">
               {response
                 ? response.products.nodes.map((product) => (
                     <Link key={product.id} to={`/products/${product.handle}`}>
-                      <Image
-                        data={product.images.nodes[0]}
-                        aspectRatio="1/1"
-                        sizes="(min-width: 45em) 20vw, 50vw"
-                      />
-                      <h4>{product.title}</h4>
-                      <small>
-                        <Money data={product.priceRange.minVariantPrice} />
-                      </small>
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>
+                            <h4>{product.title}</h4>
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <Image
+                            className="rounded"
+                            data={product.images.nodes[0]}
+                            aspectRatio="1/1"
+                            sizes="(min-width: 45em) 20vw, 50vw"
+                          />
+                        </CardContent>
+                        <CardFooter>
+                          <small>
+                            <Money data={product.priceRange.minVariantPrice} />
+                          </small>
+                        </CardFooter>
+                      </Card>
                     </Link>
                   ))
                 : null}
@@ -118,7 +138,6 @@ function RecommendedProducts({
           )}
         </Await>
       </Suspense>
-      <br />
     </div>
   );
 }

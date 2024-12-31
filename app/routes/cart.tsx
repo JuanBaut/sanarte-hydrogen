@@ -9,7 +9,7 @@ import {
 import {CartMain} from '~/components/CartMain';
 
 export const meta: MetaFunction = () => {
-  return [{title: `Hydrogen | Cart`}];
+  return [{title: `SanArte | Cart`}];
 };
 
 export async function action({request, context}: ActionFunctionArgs) {

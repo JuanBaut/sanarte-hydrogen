@@ -7,7 +7,7 @@ export default {
     extend: {
       fontFamily: {
         playwrite: ['Playwrite GB S', 'sans-serif'],
-        inter: ['Inter', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',
