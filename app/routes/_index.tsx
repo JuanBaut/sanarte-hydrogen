@@ -107,7 +107,7 @@ function RecommendedProducts({
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
           {(response) => (
-            <div className="flex gap-4">
+            <div className="flex-wrap flex gap-2 justify-center">
               {response
                 ? response.products.nodes.map((product) => (
                     <Link key={product.id} to={`/products/${product.handle}`}>

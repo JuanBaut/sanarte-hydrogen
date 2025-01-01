@@ -7,6 +7,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
+import MobileMenu from './mobile-menu';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -26,16 +27,19 @@ export function Header({
   const {shop, menu} = header;
   return (
     <header className="flex justify-between gap-4 p-4 border-b-black border-b">
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
-      />
       <NavLink className="text-xl self-center" prefetch="intent" to="/">
         <strong>{shop.name}</strong>
       </NavLink>
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      <div className="hidden sm:flex gap-4">
+        <HeaderMenu
+          menu={menu}
+          viewport="desktop"
+          primaryDomainUrl={header.shop.primaryDomain.url}
+          publicStoreDomain={publicStoreDomain}
+        />
+        <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      </div>
+      <MobileMenu />
     </header>
   );
 }
@@ -43,7 +47,6 @@ export function Header({
 export function HeaderMenu({
   menu,
   primaryDomainUrl,
-  viewport,
   publicStoreDomain,
 }: {
   menu: HeaderProps['header']['menu'];
@@ -56,17 +59,6 @@ export function HeaderMenu({
 
   return (
     <nav className="flex gap-4 self-center" role="navigation">
-      {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={close}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
-          Home
-        </NavLink>
-      )}
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 
@@ -100,7 +92,6 @@ function HeaderCtas({
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
     <nav className="flex gap-4 self-center" role="navigation">
-      <HeaderMenuMobileToggle />
       <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
         <Suspense fallback="Sign in">
           <Await resolve={isLoggedIn} errorElement="Sign in">
@@ -111,15 +102,6 @@ function HeaderCtas({
       <SearchToggle />
       <CartToggle cart={cart} />
     </nav>
-  );
-}
-
-function HeaderMenuMobileToggle() {
-  const {open} = useAside();
-  return (
-    <button className="hidden" onClick={() => open('mobile')}>
-      open mobile header
-    </button>
   );
 }
 
