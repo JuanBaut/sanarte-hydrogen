@@ -6,6 +6,7 @@ import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
+import ProductCarousel from '~/components/product-carousel';
 import {
   Card,
   CardContent,
@@ -13,6 +14,13 @@ import {
   CardHeader,
   CardTitle,
 } from '~/components/ui/card';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '~/components/ui/carousel';
 
 export const meta: MetaFunction = () => {
   return [{title: 'SanArte | Home'}];
@@ -100,44 +108,56 @@ function RecommendedProducts({
   products: Promise<RecommendedProductsQuery | null>;
 }) {
   return (
-    <div className="m-8 h-min space-y-4">
+    <div className="m-8 h-min px-16 space-y-4 max-w-screen-md mx-auto">
       <h2 className="font-playwrite font-normal text-2xl">
         Recommended Products
       </h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={products}>
-          {(response) => (
-            <div className="flex-wrap flex gap-2 justify-center">
-              {response
-                ? response.products.nodes.map((product) => (
-                    <Link key={product.id} to={`/products/${product.handle}`}>
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>
-                            <h4>{product.title}</h4>
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <Image
-                            className="rounded"
-                            data={product.images.nodes[0]}
-                            aspectRatio="1/1"
-                            sizes="(min-width: 45em) 20vw, 50vw"
-                          />
-                        </CardContent>
-                        <CardFooter>
-                          <small>
-                            <Money data={product.priceRange.minVariantPrice} />
-                          </small>
-                        </CardFooter>
-                      </Card>
-                    </Link>
-                  ))
-                : null}
-            </div>
-          )}
-        </Await>
-      </Suspense>
+
+      <Carousel className="">
+        <Suspense fallback={<div>Loading...</div>}>
+          <Await resolve={products}>
+            {(response) => (
+              <CarouselContent>
+                {response
+                  ? response.products.nodes.map((product) => (
+                      <CarouselItem
+                        key={product.id}
+                        className="aspect-square sm:basis-1/3 xs:basis-1/2"
+                      >
+                        <Link to={`/products/${product.handle}`}>
+                          <Card className="aspect-square">
+                            <CardHeader>
+                              <CardTitle>
+                                <h4>{product.title}</h4>
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <Image
+                                className="rounded"
+                                data={product.images.nodes[0]}
+                                aspectRatio="1/1"
+                                sizes="(min-width: 45em) 20vw, 50vw"
+                              />
+                            </CardContent>
+                            <CardFooter>
+                              <small>
+                                <Money
+                                  data={product.priceRange.minVariantPrice}
+                                />
+                              </small>
+                            </CardFooter>
+                          </Card>
+                        </Link>
+                      </CarouselItem>
+                    ))
+                  : null}
+              </CarouselContent>
+            )}
+          </Await>
+        </Suspense>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
     </div>
   );
 }
