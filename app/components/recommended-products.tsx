@@ -15,7 +15,7 @@ export default function RecommendedProducts({
       <h2 className="font-playwrite font-normal text-2xl">
         Recommended Products
       </h2>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Cargando...</div>}>
         <Await resolve={products}>
           {(response) => (
             <div className="flex gap-4">

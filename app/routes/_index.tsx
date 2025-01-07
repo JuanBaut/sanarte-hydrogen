@@ -110,11 +110,11 @@ function RecommendedProducts({
   return (
     <div className="m-8 h-min px-16 space-y-4 max-w-screen-md mx-auto">
       <h2 className="font-playwrite font-normal text-2xl">
-        Recommended Products
+        Productos Recomendados
       </h2>
 
       <Carousel className="">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>Cargando...</div>}>
           <Await resolve={products}>
             {(response) => (
               <CarouselContent>
