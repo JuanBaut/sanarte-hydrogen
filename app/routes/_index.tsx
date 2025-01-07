@@ -108,7 +108,7 @@ function RecommendedProducts({
   products: Promise<RecommendedProductsQuery | null>;
 }) {
   return (
-    <div className="m-8 h-min px-16 space-y-4 max-w-screen-md mx-auto">
+    <div className="m-8 h-min px-16 space-y-4 max-w-screen-xl mx-auto">
       <h2 className="font-playwrite font-normal text-2xl">
         Productos Recomendados
       </h2>
@@ -122,7 +122,7 @@ function RecommendedProducts({
                   ? response.products.nodes.map((product) => (
                       <CarouselItem
                         key={product.id}
-                        className="aspect-square sm:basis-1/3 xs:basis-1/2"
+                        className="aspect-square xl:basis-1/4 md:basis-1/3 sm:basis-1/2 max-w-[340px]"
                       >
                         <Link to={`/products/${product.handle}`}>
                           <Card className="aspect-square">
