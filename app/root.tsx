@@ -11,8 +11,12 @@ import {
   isRouteErrorResponse,
   type ShouldRevalidateFunction,
 } from '@remix-run/react';
-import favicon from '~/assets/favicon.svg';
+import appleTouchIcon from '~/assets/apple-touch-icon.png';
+import favicon16 from '~/assets/favicon-16x16.png';
+import favicon32 from '~/assets/favicon-32x32.png';
+import manifest from '~/assets/site.webmanifest';
 import styles from '~/tailwind.css?url';
+import logo from '~/assets/logo.png';
 import {PageLayout} from '~/components/PageLayout';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 
@@ -38,16 +42,14 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 
 export function links() {
   return [
+    {rel: 'manifest', href: manifest},
     {rel: 'stylesheet', href: styles},
-    {
-      rel: 'preconnect',
-      href: 'https://cdn.shopify.com',
-    },
-    {
-      rel: 'preconnect',
-      href: 'https://shop.app',
-    },
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {rel: 'preconnect', href: 'https://shop.app'},
+    {rel: 'preconnect', href: 'https://cdn.shopify.com'},
+    {rel: 'apple-touch-icon', sizes: '180x180', href: appleTouchIcon},
+    {rel: 'icon', type: 'image/png', sizes: '16x16', href: favicon16},
+    {rel: 'icon', type: 'image/png', sizes: '32x32', href: favicon32},
+    {rel: 'logo', type: 'image/png', href: logo},
   ];
 }
 

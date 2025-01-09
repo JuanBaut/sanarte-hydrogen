@@ -45,7 +45,7 @@ export function PageLayout({
           publicStoreDomain={publicStoreDomain}
         />
       )}
-      <main>{children}</main>
+      <main className="pt-20">{children}</main>
       <Footer
         footer={footer}
         header={header}
@@ -58,7 +58,7 @@ export function PageLayout({
 function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
   return (
     <Aside type="cart" heading="CART">
-      <Suspense fallback={<p>Cargando cart ...</p>}>
+      <Suspense fallback={<p>Cargando...</p>}>
         <Await resolve={cart}>
           {(cart) => {
             return <CartMain cart={cart} layout="aside" />;

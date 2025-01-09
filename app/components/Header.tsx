@@ -1,7 +1,9 @@
+import logo from '~/assets/logo.png';
 import {Suspense} from 'react';
 import {Await, NavLink, useAsyncValue} from '@remix-run/react';
 import {
   type CartViewPayload,
+  Image,
   useAnalytics,
   useOptimisticCart,
 } from '@shopify/hydrogen';
@@ -26,9 +28,15 @@ export function Header({
 }: HeaderProps) {
   const {shop, menu} = header;
   return (
-    <header className="flex justify-between gap-4 p-4 border-b-black border-b">
+    <header className="flex justify-between h-20 gap-4 px-8 py-2 border-b fixed z-50 w-full bg-background/50 backdrop-blur-md">
       <NavLink className="text-xl self-center" prefetch="intent" to="/">
-        <strong>{shop.name}</strong>
+        <Image
+          sizes="(min-width: 45em) 40vw, 100vw"
+          className="h-16"
+          loading="eager"
+          src={logo}
+          alt={shop.name}
+        />
       </NavLink>
       <div className="hidden sm:flex gap-4">
         <HeaderMenu

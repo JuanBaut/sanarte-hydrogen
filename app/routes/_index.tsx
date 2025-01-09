@@ -6,7 +6,6 @@ import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
-import ProductCarousel from '~/components/product-carousel';
 import {
   Card,
   CardContent,
@@ -18,8 +17,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
   CarouselNext,
+  CarouselPrevious,
 } from '~/components/ui/carousel';
 
 export const meta: MetaFunction = () => {
@@ -108,7 +107,7 @@ function RecommendedProducts({
   products: Promise<RecommendedProductsQuery | null>;
 }) {
   return (
-    <div className="m-8 h-min px-16 space-y-4 max-w-screen-xl mx-auto">
+    <div className="h-min py-4 px-16 space-y-4 max-w-screen-xl mx-auto">
       <h2 className="font-playwrite font-normal text-2xl">
         Productos Recomendados
       </h2>
