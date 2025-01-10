@@ -47,7 +47,11 @@ export function Header({
         />
         <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
       </div>
-      <MobileMenu />
+      <MobileMenu
+        menu={menu}
+        primaryDomainUrl={header.shop.primaryDomain.url}
+        publicStoreDomain={publicStoreDomain}
+      />
     </header>
   );
 }
@@ -62,7 +66,6 @@ export function HeaderMenu({
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
-  //const className = `header-menu-${viewport}`;
   const {close} = useAside();
 
   return (
@@ -161,7 +164,7 @@ function CartBanner() {
   return <CartBadge count={cart?.totalQuantity ?? 0} />;
 }
 
-const FALLBACK_HEADER_MENU = {
+export const FALLBACK_HEADER_MENU = {
   id: 'gid://shopify/Menu/199655587896',
   items: [
     {
