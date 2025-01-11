@@ -1,9 +1,15 @@
-import {Await} from '@remix-run/react';
-import {Image, Money} from '@shopify/hydrogen';
-import {Link} from 'lucide-react';
-import {Suspense} from 'react';
-import type {RecommendedProductsQuery} from 'storefrontapi.generated';
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from './ui/card';
+import { Await } from "@remix-run/react";
+import { Image, Money } from "@shopify/hydrogen";
+import { Link } from "lucide-react";
+import { Suspense } from "react";
+import type { RecommendedProductsQuery } from "storefrontapi.generated";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 
 export default function RecommendedProducts({
   products,
@@ -12,7 +18,7 @@ export default function RecommendedProducts({
 }) {
   return (
     <div className="m-8 h-min space-y-4">
-      <h2 className="font-playwrite font-normal text-2xl">
+      <h2 className="font-playwrite text-2xl font-normal">
         Recommended Products
       </h2>
       <Suspense fallback={<div>Cargando...</div>}>

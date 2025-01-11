@@ -2,31 +2,31 @@ import {
   json,
   type LoaderFunctionArgs,
   type ActionFunctionArgs,
-} from '@shopify/remix-oxygen';
-import {useLoaderData, type MetaFunction} from '@remix-run/react';
-import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
-import {SearchForm} from '~/components/SearchForm';
-import {SearchResults} from '~/components/SearchResults';
+} from "@shopify/remix-oxygen";
+import { useLoaderData, type MetaFunction } from "@remix-run/react";
+import { getPaginationVariables, Analytics } from "@shopify/hydrogen";
+import { SearchForm } from "~/components/SearchForm";
+import { SearchResults } from "~/components/SearchResults";
 import {
   type RegularSearchReturn,
   type PredictiveSearchReturn,
   getEmptyPredictiveSearchResult,
-} from '~/lib/search';
+} from "~/lib/search";
 
 export const meta: MetaFunction = () => {
-  return [{title: `SanArte | Search`}];
+  return [{ title: `SanArte | Search` }];
 };
 
-export async function loader({request, context}: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   const url = new URL(request.url);
-  const isPredictive = url.searchParams.has('predictive');
+  const isPredictive = url.searchParams.has("predictive");
   const searchPromise = isPredictive
-    ? predictiveSearch({request, context})
-    : regularSearch({request, context});
+    ? predictiveSearch({ request, context })
+    : regularSearch({ request, context });
 
   searchPromise.catch((error: Error) => {
     console.error(error);
-    return {term: '', result: null, error: error.message};
+    return { term: "", result: null, error: error.message };
   });
 
   return json(await searchPromise);
@@ -36,14 +36,14 @@ export async function loader({request, context}: LoaderFunctionArgs) {
  * Renders the /search route
  */
 export default function SearchPage() {
-  const {type, term, result, error} = useLoaderData<typeof loader>();
-  if (type === 'predictive') return null;
+  const { type, term, result, error } = useLoaderData<typeof loader>();
+  if (type === "predictive") return null;
 
   return (
     <div className="search">
       <h1>Search</h1>
       <SearchForm>
-        {({inputRef}) => (
+        {({ inputRef }) => (
           <>
             <input
               defaultValue={term}
@@ -57,12 +57,12 @@ export default function SearchPage() {
           </>
         )}
       </SearchForm>
-      {error && <p style={{color: 'red'}}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       {!term || !result?.total ? (
         <SearchResults.Empty />
       ) : (
         <SearchResults result={result} term={term}>
-          {({articles, pages, products, term}) => (
+          {({ articles, pages, products, term }) => (
             <div>
               <SearchResults.Products products={products} term={term} />
               <SearchResults.Pages pages={pages} term={term} />
@@ -71,7 +71,9 @@ export default function SearchPage() {
           )}
         </SearchResults>
       )}
-      <Analytics.SearchView data={{searchTerm: term, searchResults: result}} />
+      <Analytics.SearchView
+        data={{ searchTerm: term, searchResults: result }}
+      />
     </div>
   );
 }
@@ -217,32 +219,32 @@ async function regularSearch({
   context,
 }: Pick<
   LoaderFunctionArgs,
-  'request' | 'context'
+  "request" | "context"
 >): Promise<RegularSearchReturn> {
-  const {storefront} = context;
+  const { storefront } = context;
   const url = new URL(request.url);
-  const variables = getPaginationVariables(request, {pageBy: 8});
-  const term = String(url.searchParams.get('q') || '');
+  const variables = getPaginationVariables(request, { pageBy: 8 });
+  const term = String(url.searchParams.get("q") || "");
 
   // Search articles, pages, and products for the `q` term
-  const {errors, ...items} = await storefront.query(SEARCH_QUERY, {
-    variables: {...variables, term},
+  const { errors, ...items } = await storefront.query(SEARCH_QUERY, {
+    variables: { ...variables, term },
   });
 
   if (!items) {
-    throw new Error('No search data returned from Shopify API');
+    throw new Error("No search data returned from Shopify API");
   }
 
   const total = Object.values(items).reduce(
-    (acc, {nodes}) => acc + nodes.length,
+    (acc, { nodes }) => acc + nodes.length,
     0,
   );
 
   const error = errors
-    ? errors.map(({message}) => message).join(', ')
+    ? errors.map(({ message }) => message).join(", ")
     : undefined;
 
-  return {type: 'regular', term, error, result: {total, items}};
+  return { type: "regular", term, error, result: { total, items } };
 }
 
 /**
@@ -378,24 +380,24 @@ async function predictiveSearch({
   context,
 }: Pick<
   ActionFunctionArgs,
-  'request' | 'context'
+  "request" | "context"
 >): Promise<PredictiveSearchReturn> {
-  const {storefront} = context;
+  const { storefront } = context;
   const url = new URL(request.url);
-  const term = String(url.searchParams.get('q') || '').trim();
-  const limit = Number(url.searchParams.get('limit') || 10);
-  const type = 'predictive';
+  const term = String(url.searchParams.get("q") || "").trim();
+  const limit = Number(url.searchParams.get("limit") || 10);
+  const type = "predictive";
 
-  if (!term) return {type, term, result: getEmptyPredictiveSearchResult()};
+  if (!term) return { type, term, result: getEmptyPredictiveSearchResult() };
 
   // Predictively search articles, collections, pages, products, and queries (suggestions)
-  const {predictiveSearch: items, errors} = await storefront.query(
+  const { predictiveSearch: items, errors } = await storefront.query(
     PREDICTIVE_SEARCH_QUERY,
     {
       variables: {
         // customize search options as needed
         limit,
-        limitScope: 'EACH',
+        limitScope: "EACH",
         term,
       },
     },
@@ -403,12 +405,12 @@ async function predictiveSearch({
 
   if (errors) {
     throw new Error(
-      `Shopify API errors: ${errors.map(({message}) => message).join(', ')}`,
+      `Shopify API errors: ${errors.map(({ message }) => message).join(", ")}`,
     );
   }
 
   if (!items) {
-    throw new Error('No predictive search data returned from Shopify API');
+    throw new Error("No predictive search data returned from Shopify API");
   }
 
   const total = Object.values(items).reduce(
@@ -416,5 +418,5 @@ async function predictiveSearch({
     0,
   );
 
-  return {type, term, result: {items, total}};
+  return { type, term, result: { items, total } };
 }

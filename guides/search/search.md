@@ -167,31 +167,31 @@ export const SEARCH_QUERY = `#graphql
 async function search({
   request,
   context,
-}: Pick<LoaderFunctionArgs, 'request' | 'context'>) {
-  const {storefront} = context;
+}: Pick<LoaderFunctionArgs, "request" | "context">) {
+  const { storefront } = context;
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);
-  const variables = getPaginationVariables(request, {pageBy: 8});
-  const term = String(searchParams.get('q') || '');
+  const variables = getPaginationVariables(request, { pageBy: 8 });
+  const term = String(searchParams.get("q") || "");
 
   // Search articles, pages, and products for the `q` term
-  const {errors, ...items} = await storefront.query(SEARCH_QUERY, {
-    variables: {...variables, term},
+  const { errors, ...items } = await storefront.query(SEARCH_QUERY, {
+    variables: { ...variables, term },
   });
 
   if (!items) {
-    throw new Error('No search data returned from Shopify API');
+    throw new Error("No search data returned from Shopify API");
   }
 
   if (errors) {
     throw new Error(errors[0].message);
   }
 
-  const total = Object.values(items).reduce((acc, {nodes}) => {
+  const total = Object.values(items).reduce((acc, { nodes }) => {
     return acc + nodes.length;
   }, 0);
 
-  return json({term, result: {total, items}});
+  return json({ term, result: { total, items } });
 }
 ```
 
@@ -207,19 +207,19 @@ the form if present in it's children prop
  * Handles regular search GET requests
  * requested by the SearchForm component and /search route visits
  */
-export async function loader({request, context}: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   const url = new URL(request.url);
-  const isRegular = !url.searchParams.has('predictive');
+  const isRegular = !url.searchParams.has("predictive");
 
   if (!isRegular) {
     return json({});
   }
 
-  const searchPromise = regularSearch({request, context});
+  const searchPromise = regularSearch({ request, context });
 
   searchPromise.catch((error: Error) => {
     console.error(error);
-    return {term: '', result: null, error: error.message};
+    return { term: "", result: null, error: error.message };
   });
 
   return json(await searchPromise);
@@ -289,7 +289,7 @@ export default function SearchPage() {
 - Modify the search fetcher term variable to parse the new name. e.g
 
 ```ts
-const term = String(searchParams.get('query') || '');
+const term = String(searchParams.get("query") || "");
 ```
 
 ### How to customize the way the results look?

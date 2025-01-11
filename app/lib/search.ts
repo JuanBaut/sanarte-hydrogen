@@ -1,28 +1,28 @@
 import type {
   PredictiveSearchQuery,
   RegularSearchQuery,
-} from 'storefrontapi.generated';
+} from "storefrontapi.generated";
 
-type ResultWithItems<Type extends 'predictive' | 'regular', Items> = {
+type ResultWithItems<Type extends "predictive" | "regular", Items> = {
   type: Type;
   term: string;
   error?: string;
-  result: {total: number; items: Items};
+  result: { total: number; items: Items };
 };
 
 export type RegularSearchReturn = ResultWithItems<
-  'regular',
+  "regular",
   RegularSearchQuery
 >;
 export type PredictiveSearchReturn = ResultWithItems<
-  'predictive',
-  NonNullable<PredictiveSearchQuery['predictiveSearch']>
+  "predictive",
+  NonNullable<PredictiveSearchQuery["predictiveSearch"]>
 >;
 
 /**
  * Returns the empty state of a predictive search result to reset the search state.
  */
-export function getEmptyPredictiveSearchResult(): PredictiveSearchReturn['result'] {
+export function getEmptyPredictiveSearchResult(): PredictiveSearchReturn["result"] {
   return {
     total: 0,
     items: {

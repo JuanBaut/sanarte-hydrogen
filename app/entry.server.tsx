@@ -1,8 +1,8 @@
-import type {EntryContext, AppLoadContext} from '@shopify/remix-oxygen';
-import {RemixServer} from '@remix-run/react';
-import isbot from 'isbot';
-import {renderToReadableStream} from 'react-dom/server';
-import {createContentSecurityPolicy} from '@shopify/hydrogen';
+import type { EntryContext, AppLoadContext } from "@shopify/remix-oxygen";
+import { RemixServer } from "@remix-run/react";
+import isbot from "isbot";
+import { renderToReadableStream } from "react-dom/server";
+import { createContentSecurityPolicy } from "@shopify/hydrogen";
 
 export default async function handleRequest(
   request: Request,
@@ -11,7 +11,7 @@ export default async function handleRequest(
   remixContext: EntryContext,
   context: AppLoadContext,
 ) {
-  const {nonce, header, NonceProvider} = createContentSecurityPolicy({
+  const { nonce, header, NonceProvider } = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
@@ -33,12 +33,12 @@ export default async function handleRequest(
     },
   );
 
-  if (isbot(request.headers.get('user-agent'))) {
+  if (isbot(request.headers.get("user-agent"))) {
     await body.allReady;
   }
 
-  responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', header);
+  responseHeaders.set("Content-Type", "text/html");
+  responseHeaders.set("Content-Security-Policy", header);
 
   return new Response(body, {
     headers: responseHeaders,

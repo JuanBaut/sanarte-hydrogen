@@ -275,25 +275,25 @@
   8. Update the `ProductForm` component.
 
   ```tsx
-  import {Link, useNavigate} from '@remix-run/react';
-  import {type MappedProductOptions} from '@shopify/hydrogen';
+  import { Link, useNavigate } from "@remix-run/react";
+  import { type MappedProductOptions } from "@shopify/hydrogen";
   import type {
     Maybe,
     ProductOptionValueSwatch,
-  } from '@shopify/hydrogen/storefront-api-types';
-  import {AddToCartButton} from './AddToCartButton';
-  import {useAside} from './Aside';
-  import type {ProductFragment} from 'storefrontapi.generated';
+  } from "@shopify/hydrogen/storefront-api-types";
+  import { AddToCartButton } from "./AddToCartButton";
+  import { useAside } from "./Aside";
+  import type { ProductFragment } from "storefrontapi.generated";
 
   export function ProductForm({
     productOptions,
     selectedVariant,
   }: {
     productOptions: MappedProductOptions[];
-    selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
+    selectedVariant: ProductFragment["selectedOrFirstAvailableVariant"];
   }) {
     const navigate = useNavigate();
-    const {open} = useAside();
+    const { open } = useAside();
     return (
       <div className="product-form">
         {productOptions.map((option) => (
@@ -327,8 +327,8 @@
                       to={`/products/${handle}?${variantUriQuery}`}
                       style={{
                         border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
+                          ? "1px solid black"
+                          : "1px solid transparent",
                         opacity: available ? 1 : 0.3,
                       }}
                     >
@@ -345,13 +345,13 @@
                     <button
                       type="button"
                       className={`product-options-item${
-                        exists && !selected ? ' link' : ''
+                        exists && !selected ? "link" : ""
                       }`}
                       key={option.name + name}
                       style={{
                         border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
+                          ? "1px solid black"
+                          : "1px solid transparent",
                         opacity: available ? 1 : 0.3,
                       }}
                       disabled={!exists}
@@ -375,7 +375,7 @@
         <AddToCartButton
           disabled={!selectedVariant || !selectedVariant.availableForSale}
           onClick={() => {
-            open('cart');
+            open("cart");
           }}
           lines={
             selectedVariant
@@ -389,7 +389,7 @@
               : []
           }
         >
-          {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+          {selectedVariant?.availableForSale ? "Add to cart" : "Sold out"}
         </AddToCartButton>
       </div>
     );
@@ -412,7 +412,7 @@
         aria-label={name}
         className="product-option-label-swatch"
         style={{
-          backgroundColor: color || 'transparent',
+          backgroundColor: color || "transparent",
         }}
       >
         {!!image && <img src={image} alt={name} />}
@@ -913,21 +913,21 @@
   New `withCache.fetch` is for caching simple fetch requests. This method caches the responses if they are OK responses, and you can pass `shouldCacheResponse`, `cacheKey`, etc. to modify behavior. `data` is the consumed body of the response (we need to consume to cache it).
 
   ```ts
-  const withCache = createWithCache({cache, waitUntil, request});
+  const withCache = createWithCache({ cache, waitUntil, request });
 
-  const {data, response} = await withCache.fetch<{data: T; error: string}>(
-    'my-cms.com/api',
+  const { data, response } = await withCache.fetch<{ data: T; error: string }>(
+    "my-cms.com/api",
     {
-      method: 'POST',
-      headers: {'Content-type': 'application/json'},
+      method: "POST",
+      headers: { "Content-type": "application/json" },
       body,
     },
     {
       cacheStrategy: CacheLong(),
       // Cache if there are no data errors or a specific data that make this result not suited for caching
       shouldCacheResponse: (result) => !result?.error,
-      cacheKey: ['my-cms', body],
-      displayName: 'My CMS query',
+      cacheKey: ["my-cms", body],
+      displayName: "My CMS query",
     },
   );
   ```
@@ -1503,9 +1503,9 @@
 
   ```tsx
   // app/lib/root-data.ts
-  import {useMatches} from '@remix-run/react';
-  import type {SerializeFrom} from '@shopify/remix-oxygen';
-  import type {loader} from '~/root';
+  import { useMatches } from "@remix-run/react";
+  import type { SerializeFrom } from "@shopify/remix-oxygen";
+  import type { loader } from "~/root";
 
   /**
    * Access the result of the root loader from a React component.
@@ -1667,10 +1667,10 @@
 - This is an important fix to a bug with 404 routes and path-based i18n projects where some unknown routes would not properly render a 404. This fixes all new projects, but to fix existing projects, add a `($locale).tsx` route with the following contents: ([#1732](https://github.com/Shopify/hydrogen/pull/1732)) by [@blittle](https://github.com/blittle)
 
   ```ts
-  import {type LoaderFunctionArgs} from '@remix-run/server-runtime';
+  import { type LoaderFunctionArgs } from "@remix-run/server-runtime";
 
-  export async function loader({params, context}: LoaderFunctionArgs) {
-    const {language, country} = context.storefront.i18n;
+  export async function loader({ params, context }: LoaderFunctionArgs) {
+    const { language, country } = context.storefront.i18n;
 
     if (
       params.locale &&
@@ -1678,7 +1678,7 @@
     ) {
       // If the locale URL param is defined, yet we still are still at the default locale
       // then the the locale param must be invalid, send to the 404 page
-      throw new Response(null, {status: 404});
+      throw new Response(null, { status: 404 });
     }
 
     return null;
@@ -1734,11 +1734,11 @@
   ```yaml
   projects:
     default:
-      schema: 'node_modules/@shopify/hydrogen/storefront.schema.json'
+      schema: "node_modules/@shopify/hydrogen/storefront.schema.json"
       documents:
-        - '!*.d.ts'
-        - '*.{ts,tsx,js,jsx}'
-        - 'app/**/*.{ts,tsx,js,jsx}'
+        - "!*.d.ts"
+        - "*.{ts,tsx,js,jsx}"
+        - "app/**/*.{ts,tsx,js,jsx}"
   ```
 
 - Improve resiliency of `HydrogenSession` ([#1583](https://github.com/Shopify/hydrogen/pull/1583)) by [@blittle](https://github.com/blittle)
@@ -1953,8 +1953,8 @@
   ```ts
   // root.tsx
 
-  import {useMatches} from '@remix-run/react';
-  import {type SerializeFrom} from '@shopify/remix-oxygen';
+  import { useMatches } from "@remix-run/react";
+  import { type SerializeFrom } from "@shopify/remix-oxygen";
 
   export const useRootLoaderData = () => {
     const [root] = useMatches();

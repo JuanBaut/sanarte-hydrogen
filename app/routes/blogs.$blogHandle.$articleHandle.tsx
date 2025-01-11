@@ -1,9 +1,9 @@
-import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, type MetaFunction} from '@remix-run/react';
-import {Image} from '@shopify/hydrogen';
+import { defer, type LoaderFunctionArgs } from "@shopify/remix-oxygen";
+import { useLoaderData, type MetaFunction } from "@remix-run/react";
+import { Image } from "@shopify/hydrogen";
 
-export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `SanArte | ${data?.article.title ?? ''} article`}];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: `SanArte | ${data?.article.title ?? ""} article` }];
 };
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -13,34 +13,34 @@ export async function loader(args: LoaderFunctionArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return defer({...deferredData, ...criticalData});
+  return defer({ ...deferredData, ...criticalData });
 }
 
 /**
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({context, params}: LoaderFunctionArgs) {
-  const {blogHandle, articleHandle} = params;
+async function loadCriticalData({ context, params }: LoaderFunctionArgs) {
+  const { blogHandle, articleHandle } = params;
 
   if (!articleHandle || !blogHandle) {
-    throw new Response('Not found', {status: 404});
+    throw new Response("Not found", { status: 404 });
   }
 
-  const [{blog}] = await Promise.all([
+  const [{ blog }] = await Promise.all([
     context.storefront.query(ARTICLE_QUERY, {
-      variables: {blogHandle, articleHandle},
+      variables: { blogHandle, articleHandle },
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
 
   if (!blog?.articleByHandle) {
-    throw new Response(null, {status: 404});
+    throw new Response(null, { status: 404 });
   }
 
   const article = blog.articleByHandle;
 
-  return {article};
+  return { article };
 }
 
 /**
@@ -48,18 +48,18 @@ async function loadCriticalData({context, params}: LoaderFunctionArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: LoaderFunctionArgs) {
+function loadDeferredData({ context }: LoaderFunctionArgs) {
   return {};
 }
 
 export default function Article() {
-  const {article} = useLoaderData<typeof loader>();
-  const {title, image, contentHtml, author} = article;
+  const { article } = useLoaderData<typeof loader>();
+  const { title, image, contentHtml, author } = article;
 
-  const publishedDate = new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  const publishedDate = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   }).format(new Date(article.publishedAt));
 
   return (
@@ -73,7 +73,7 @@ export default function Article() {
 
       {image && <Image data={image} sizes="90vw" loading="eager" />}
       <div
-        dangerouslySetInnerHTML={{__html: contentHtml}}
+        dangerouslySetInnerHTML={{ __html: contentHtml }}
         className="article"
       />
     </div>

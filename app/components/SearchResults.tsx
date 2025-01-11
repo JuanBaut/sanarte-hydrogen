@@ -1,28 +1,28 @@
-import {Link} from '@remix-run/react';
-import {Image, Money, Pagination} from '@shopify/hydrogen';
-import {urlWithTrackingParams, type RegularSearchReturn} from '~/lib/search';
+import { Link } from "@remix-run/react";
+import { Image, Money, Pagination } from "@shopify/hydrogen";
+import { urlWithTrackingParams, type RegularSearchReturn } from "~/lib/search";
 
-type SearchItems = RegularSearchReturn['result']['items'];
+type SearchItems = RegularSearchReturn["result"]["items"];
 type PartialSearchResult<ItemType extends keyof SearchItems> = Pick<
   SearchItems,
   ItemType
 > &
-  Pick<RegularSearchReturn, 'term'>;
+  Pick<RegularSearchReturn, "term">;
 
 type SearchResultsProps = RegularSearchReturn & {
-  children: (args: SearchItems & {term: string}) => React.ReactNode;
+  children: (args: SearchItems & { term: string }) => React.ReactNode;
 };
 
 export function SearchResults({
   term,
   result,
   children,
-}: Omit<SearchResultsProps, 'error' | 'type'>) {
+}: Omit<SearchResultsProps, "error" | "type">) {
   if (!result?.total) {
     return null;
   }
 
-  return children({...result.items, term});
+  return children({ ...result.items, term });
 }
 
 SearchResults.Articles = SearchResultsArticles;
@@ -33,7 +33,7 @@ SearchResults.Empty = SearchResultsEmpty;
 function SearchResultsArticles({
   term,
   articles,
-}: PartialSearchResult<'articles'>) {
+}: PartialSearchResult<"articles">) {
   if (!articles?.nodes.length) {
     return null;
   }
@@ -63,7 +63,7 @@ function SearchResultsArticles({
   );
 }
 
-function SearchResultsPages({term, pages}: PartialSearchResult<'pages'>) {
+function SearchResultsPages({ term, pages }: PartialSearchResult<"pages">) {
   if (!pages?.nodes.length) {
     return null;
   }
@@ -96,7 +96,7 @@ function SearchResultsPages({term, pages}: PartialSearchResult<'pages'>) {
 function SearchResultsProducts({
   term,
   products,
-}: PartialSearchResult<'products'>) {
+}: PartialSearchResult<"products">) {
   if (!products?.nodes.length) {
     return null;
   }
@@ -105,7 +105,7 @@ function SearchResultsProducts({
     <div className="search-result">
       <h2>Products</h2>
       <Pagination connection={products}>
-        {({nodes, isLoading, NextLink, PreviousLink}) => {
+        {({ nodes, isLoading, NextLink, PreviousLink }) => {
           const ItemsMarkup = nodes.map((product) => {
             const productUrl = urlWithTrackingParams({
               baseUrl: `/products/${product.handle}`,
@@ -135,7 +135,7 @@ function SearchResultsProducts({
             <div>
               <div>
                 <PreviousLink>
-                  {isLoading ? 'Cargando...' : <span>↑ Load previous</span>}
+                  {isLoading ? "Cargando..." : <span>↑ Load previous</span>}
                 </PreviousLink>
               </div>
               <div>
@@ -144,7 +144,7 @@ function SearchResultsProducts({
               </div>
               <div>
                 <NextLink>
-                  {isLoading ? 'Cargando...' : <span>Load more ↓</span>}
+                  {isLoading ? "Cargando..." : <span>Load more ↓</span>}
                 </NextLink>
               </div>
             </div>

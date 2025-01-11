@@ -1,17 +1,17 @@
-import type {CartApiQueryFragment} from 'storefrontapi.generated';
-import type {CartLayout} from '~/components/CartMain';
-import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
-import {useRef} from 'react';
-import {FetcherWithComponents} from '@remix-run/react';
+import type { CartApiQueryFragment } from "storefrontapi.generated";
+import type { CartLayout } from "~/components/CartMain";
+import { CartForm, Money, type OptimisticCart } from "@shopify/hydrogen";
+import { useRef } from "react";
+import { FetcherWithComponents } from "@remix-run/react";
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
   layout: CartLayout;
 };
 
-export function CartSummary({cart, layout}: CartSummaryProps) {
+export function CartSummary({ cart, layout }: CartSummaryProps) {
   const className =
-    layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
+    layout === "page" ? "cart-summary-page" : "cart-summary-aside";
 
   return (
     <div aria-labelledby="cart-summary" className={className}>
@@ -22,7 +22,7 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
           {cart.cost?.subtotalAmount?.amount ? (
             <Money data={cart.cost?.subtotalAmount} />
           ) : (
-            '-'
+            "-"
           )}
         </dd>
       </dl>
@@ -32,7 +32,7 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
     </div>
   );
 }
-function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
+function CartCheckoutActions({ checkoutUrl }: { checkoutUrl?: string }) {
   if (!checkoutUrl) return null;
 
   return (
@@ -48,12 +48,12 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
 function CartDiscounts({
   discountCodes,
 }: {
-  discountCodes?: CartApiQueryFragment['discountCodes'];
+  discountCodes?: CartApiQueryFragment["discountCodes"];
 }) {
   const codes: string[] =
     discountCodes
       ?.filter((discount) => discount.applicable)
-      ?.map(({code}) => code) || [];
+      ?.map(({ code }) => code) || [];
 
   return (
     <div>
@@ -63,7 +63,7 @@ function CartDiscounts({
           <dt>Discount(s)</dt>
           <UpdateDiscountForm>
             <div className="cart-discount">
-              <code>{codes?.join(', ')}</code>
+              <code>{codes?.join(", ")}</code>
               &nbsp;
               <button>Remove</button>
             </div>
@@ -106,19 +106,19 @@ function UpdateDiscountForm({
 function CartGiftCard({
   giftCardCodes,
 }: {
-  giftCardCodes: CartApiQueryFragment['appliedGiftCards'] | undefined;
+  giftCardCodes: CartApiQueryFragment["appliedGiftCards"] | undefined;
 }) {
   const appliedGiftCardCodes = useRef<string[]>([]);
   const giftCardCodeInput = useRef<HTMLInputElement>(null);
   const codes: string[] =
-    giftCardCodes?.map(({lastCharacters}) => `***${lastCharacters}`) || [];
+    giftCardCodes?.map(({ lastCharacters }) => `***${lastCharacters}`) || [];
 
   function saveAppliedCode(code: string) {
-    const formattedCode = code.replace(/\s/g, ''); // Remove spaces
+    const formattedCode = code.replace(/\s/g, ""); // Remove spaces
     if (!appliedGiftCardCodes.current.includes(formattedCode)) {
       appliedGiftCardCodes.current.push(formattedCode);
     }
-    giftCardCodeInput.current!.value = '';
+    giftCardCodeInput.current!.value = "";
   }
 
   function removeAppliedCode() {
@@ -133,7 +133,7 @@ function CartGiftCard({
           <dt>Applied Gift Card(s)</dt>
           <UpdateGiftCardForm>
             <div className="cart-discount">
-              <code>{codes?.join(', ')}</code>
+              <code>{codes?.join(", ")}</code>
               &nbsp;
               <button onSubmit={() => removeAppliedCode}>Remove</button>
             </div>
@@ -180,7 +180,7 @@ function UpdateGiftCardForm({
       }}
     >
       {(fetcher: FetcherWithComponents<any>) => {
-        const code = fetcher.formData?.get('giftCardCode');
+        const code = fetcher.formData?.get("giftCardCode");
         if (code) saveAppliedCode && saveAppliedCode(code as string);
         return children;
       }}

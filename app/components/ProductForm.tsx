@@ -1,22 +1,22 @@
-import {Link, useNavigate} from '@remix-run/react';
-import {type MappedProductOptions} from '@shopify/hydrogen';
+import { Link, useNavigate } from "@remix-run/react";
+import { type MappedProductOptions } from "@shopify/hydrogen";
 import type {
   Maybe,
   ProductOptionValueSwatch,
-} from '@shopify/hydrogen/storefront-api-types';
-import {AddToCartButton} from './AddToCartButton';
-import {useAside} from './Aside';
-import type {ProductFragment} from 'storefrontapi.generated';
+} from "@shopify/hydrogen/storefront-api-types";
+import { AddToCartButton } from "./AddToCartButton";
+import { useAside } from "./Aside";
+import type { ProductFragment } from "storefrontapi.generated";
 
 export function ProductForm({
   productOptions,
   selectedVariant,
 }: {
   productOptions: MappedProductOptions[];
-  selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
+  selectedVariant: ProductFragment["selectedOrFirstAvailableVariant"];
 }) {
   const navigate = useNavigate();
-  const {open} = useAside();
+  const { open } = useAside();
   return (
     <div className="product-form">
       {productOptions.map((option) => {
@@ -54,8 +54,8 @@ export function ProductForm({
                       to={`/products/${handle}?${variantUriQuery}`}
                       style={{
                         border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
+                          ? "1px solid black"
+                          : "1px solid transparent",
                         opacity: available ? 1 : 0.3,
                       }}
                     >
@@ -72,13 +72,13 @@ export function ProductForm({
                     <button
                       type="button"
                       className={`product-options-item${
-                        exists && !selected ? ' link' : ''
+                        exists && !selected ? "link" : ""
                       }`}
                       key={option.name + name}
                       style={{
                         border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
+                          ? "1px solid black"
+                          : "1px solid transparent",
                         opacity: available ? 1 : 0.3,
                       }}
                       disabled={!exists}
@@ -104,7 +104,7 @@ export function ProductForm({
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
         onClick={() => {
-          open('cart');
+          open("cart");
         }}
         lines={
           selectedVariant
@@ -118,7 +118,7 @@ export function ProductForm({
             : []
         }
       >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        {selectedVariant?.availableForSale ? "Add to cart" : "Sold out"}
       </AddToCartButton>
     </div>
   );
@@ -141,7 +141,7 @@ function ProductOptionSwatch({
       aria-label={name}
       className="product-option-label-swatch"
       style={{
-        backgroundColor: color || 'transparent',
+        backgroundColor: color || "transparent",
       }}
     >
       {!!image && <img src={image} alt={name} />}

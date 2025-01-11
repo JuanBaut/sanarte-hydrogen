@@ -1,26 +1,26 @@
-import {type MetaFunction, useLoaderData} from '@remix-run/react';
-import type {CartQueryDataReturn} from '@shopify/hydrogen';
-import {CartForm} from '@shopify/hydrogen';
+import { type MetaFunction, useLoaderData } from "@remix-run/react";
+import type { CartQueryDataReturn } from "@shopify/hydrogen";
+import { CartForm } from "@shopify/hydrogen";
 import {
   json,
   type LoaderFunctionArgs,
   type ActionFunctionArgs,
-} from '@shopify/remix-oxygen';
-import {CartMain} from '~/components/CartMain';
+} from "@shopify/remix-oxygen";
+import { CartMain } from "~/components/CartMain";
 
 export const meta: MetaFunction = () => {
-  return [{title: `SanArte | Cart`}];
+  return [{ title: `SanArte | Cart` }];
 };
 
-export async function action({request, context}: ActionFunctionArgs) {
-  const {cart} = context;
+export async function action({ request, context }: ActionFunctionArgs) {
+  const { cart } = context;
 
   const formData = await request.formData();
 
-  const {action, inputs} = CartForm.getFormInput(formData);
+  const { action, inputs } = CartForm.getFormInput(formData);
 
   if (!action) {
-    throw new Error('No action provided');
+    throw new Error("No action provided");
   }
 
   let status = 200;
@@ -76,12 +76,12 @@ export async function action({request, context}: ActionFunctionArgs) {
 
   const cartId = result?.cart?.id;
   const headers = cartId ? cart.setCartId(result.cart.id) : new Headers();
-  const {cart: cartResult, errors, warnings} = result;
+  const { cart: cartResult, errors, warnings } = result;
 
-  const redirectTo = formData.get('redirectTo') ?? null;
-  if (typeof redirectTo === 'string') {
+  const redirectTo = formData.get("redirectTo") ?? null;
+  if (typeof redirectTo === "string") {
     status = 303;
-    headers.set('Location', redirectTo);
+    headers.set("Location", redirectTo);
   }
 
   return json(
@@ -93,12 +93,12 @@ export async function action({request, context}: ActionFunctionArgs) {
         cartId,
       },
     },
-    {status, headers},
+    { status, headers },
   );
 }
 
-export async function loader({context}: LoaderFunctionArgs) {
-  const {cart} = context;
+export async function loader({ context }: LoaderFunctionArgs) {
+  const { cart } = context;
   return json(await cart.get());
 }
 

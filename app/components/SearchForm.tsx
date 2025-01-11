@@ -1,7 +1,7 @@
-import {useRef, useEffect} from 'react';
-import {Form, type FormProps} from '@remix-run/react';
+import { useRef, useEffect } from "react";
+import { Form, type FormProps } from "@remix-run/react";
 
-type SearchFormProps = Omit<FormProps, 'children'> & {
+type SearchFormProps = Omit<FormProps, "children"> & {
   children: (args: {
     inputRef: React.RefObject<HTMLInputElement>;
   }) => React.ReactNode;
@@ -26,18 +26,18 @@ type SearchFormProps = Omit<FormProps, 'children'> & {
  *  )}
  *  </SearchForm>
  */
-export function SearchForm({children, ...props}: SearchFormProps) {
+export function SearchForm({ children, ...props }: SearchFormProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useFocusOnCmdK(inputRef);
 
-  if (typeof children !== 'function') {
+  if (typeof children !== "function") {
     return null;
   }
 
   return (
     <Form method="get" {...props}>
-      {children({inputRef})}
+      {children({ inputRef })}
     </Form>
   );
 }
@@ -49,20 +49,20 @@ function useFocusOnCmdK(inputRef: React.RefObject<HTMLInputElement>) {
   // focus the input when cmd+k is pressed
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'k' && event.metaKey) {
+      if (event.key === "k" && event.metaKey) {
         event.preventDefault();
         inputRef.current?.focus();
       }
 
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         inputRef.current?.blur();
       }
     }
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [inputRef]);
 }

@@ -1,7 +1,7 @@
-import {createHydrogenContext} from '@shopify/hydrogen';
-import {AppSession} from '~/lib/session';
-import {CART_QUERY_FRAGMENT} from '~/lib/fragments';
-import {getLocaleFromRequest} from '~/lib/i18n';
+import { createHydrogenContext } from "@shopify/hydrogen";
+import { AppSession } from "~/lib/session";
+import { CART_QUERY_FRAGMENT } from "~/lib/fragments";
+import { getLocaleFromRequest } from "~/lib/i18n";
 
 /**
  * The context implementation is separate from server.ts
@@ -16,12 +16,12 @@ export async function createAppLoadContext(
    * Open a cache instance in the worker and a custom session instance.
    */
   if (!env?.SESSION_SECRET) {
-    throw new Error('SESSION_SECRET environment variable is not set');
+    throw new Error("SESSION_SECRET environment variable is not set");
   }
 
   const waitUntil = executionContext.waitUntil.bind(executionContext);
   const [cache, session] = await Promise.all([
-    caches.open('hydrogen'),
+    caches.open("hydrogen"),
     AppSession.init(request, [env.SESSION_SECRET]),
   ]);
 

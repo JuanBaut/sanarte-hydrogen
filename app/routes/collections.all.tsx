@@ -1,12 +1,12 @@
-import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, Link, type MetaFunction} from '@remix-run/react';
-import {getPaginationVariables, Image, Money} from '@shopify/hydrogen';
-import type {ProductItemFragment} from 'storefrontapi.generated';
-import {useVariantUrl} from '~/lib/variants';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import { defer, type LoaderFunctionArgs } from "@shopify/remix-oxygen";
+import { useLoaderData, Link, type MetaFunction } from "@remix-run/react";
+import { getPaginationVariables, Image, Money } from "@shopify/hydrogen";
+import type { ProductItemFragment } from "storefrontapi.generated";
+import { useVariantUrl } from "~/lib/variants";
+import { PaginatedResourceSection } from "~/components/PaginatedResourceSection";
 
 export const meta: MetaFunction<typeof loader> = () => {
-  return [{title: `SanArte | Products`}];
+  return [{ title: `SanArte | Products` }];
 };
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -16,26 +16,26 @@ export async function loader(args: LoaderFunctionArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return defer({...deferredData, ...criticalData});
+  return defer({ ...deferredData, ...criticalData });
 }
 
 /**
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({context, request}: LoaderFunctionArgs) {
-  const {storefront} = context;
+async function loadCriticalData({ context, request }: LoaderFunctionArgs) {
+  const { storefront } = context;
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
 
-  const [{products}] = await Promise.all([
+  const [{ products }] = await Promise.all([
     storefront.query(CATALOG_QUERY, {
-      variables: {...paginationVariables},
+      variables: { ...paginationVariables },
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
-  return {products};
+  return { products };
 }
 
 /**
@@ -43,12 +43,12 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: LoaderFunctionArgs) {
+function loadDeferredData({ context }: LoaderFunctionArgs) {
   return {};
 }
 
 export default function Collection() {
-  const {products} = useLoaderData<typeof loader>();
+  const { products } = useLoaderData<typeof loader>();
 
   return (
     <div className="collection">
@@ -57,11 +57,11 @@ export default function Collection() {
         connection={products}
         resourcesClassName="products-grid"
       >
-        {({node: product, index}) => (
+        {({ node: product, index }) => (
           <ProductItem
             key={product.id}
             product={product}
-            loading={index < 8 ? 'eager' : undefined}
+            loading={index < 8 ? "eager" : undefined}
           />
         )}
       </PaginatedResourceSection>
@@ -74,7 +74,7 @@ function ProductItem({
   loading,
 }: {
   product: ProductItemFragment;
-  loading?: 'eager' | 'lazy';
+  loading?: "eager" | "lazy";
 }) {
   const variantUrl = useVariantUrl(product.handle);
   return (

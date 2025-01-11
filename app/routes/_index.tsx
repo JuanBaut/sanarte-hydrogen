@@ -1,28 +1,33 @@
-import {Await, Link, useLoaderData, type MetaFunction} from '@remix-run/react';
-import {Image, Money} from '@shopify/hydrogen';
-import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {Suspense} from 'react';
+import {
+  Await,
+  Link,
+  useLoaderData,
+  type MetaFunction,
+} from "@remix-run/react";
+import { Image, Money } from "@shopify/hydrogen";
+import { defer, type LoaderFunctionArgs } from "@shopify/remix-oxygen";
+import { Suspense } from "react";
 import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
-} from 'storefrontapi.generated';
+} from "storefrontapi.generated";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '~/components/ui/card';
+} from "~/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '~/components/ui/carousel';
+} from "~/components/ui/carousel";
 
 export const meta: MetaFunction = () => {
-  return [{title: 'SanArte | Home'}];
+  return [{ title: "SanArte | Home" }];
 };
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -32,15 +37,15 @@ export async function loader(args: LoaderFunctionArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return defer({...deferredData, ...criticalData});
+  return defer({ ...deferredData, ...criticalData });
 }
 
 /**
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({context}: LoaderFunctionArgs) {
-  const [{collections}] = await Promise.all([
+async function loadCriticalData({ context }: LoaderFunctionArgs) {
+  const [{ collections }] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
   ]);
@@ -55,7 +60,7 @@ async function loadCriticalData({context}: LoaderFunctionArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: LoaderFunctionArgs) {
+function loadDeferredData({ context }: LoaderFunctionArgs) {
   const recommendedProducts = context.storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .catch((error) => {
@@ -107,8 +112,8 @@ function RecommendedProducts({
   products: Promise<RecommendedProductsQuery | null>;
 }) {
   return (
-    <div className="h-min py-4 px-16 space-y-4 max-w-screen-xl mx-auto">
-      <h2 className="font-playwrite font-normal text-2xl">
+    <div className="mx-auto h-min max-w-screen-xl space-y-4 px-16 py-4">
+      <h2 className="font-playwrite text-2xl font-normal">
         Productos Recomendados
       </h2>
 
@@ -121,11 +126,11 @@ function RecommendedProducts({
                   ? response.products.nodes.map((product) => (
                       <CarouselItem
                         key={product.id}
-                        className="aspect-square xl:basis-1/4 md:basis-1/3 sm:basis-1/2 max-w-[340px]"
+                        className="aspect-square max-w-[340px] sm:basis-1/2 md:basis-1/3 xl:basis-1/4"
                       >
                         <Link to={`/products/${product.handle}`}>
                           <Card className="aspect-square">
-                            <CardContent className="px-0 overflow-hidden rounded-xl">
+                            <CardContent className="overflow-hidden rounded-xl px-0">
                               <Image
                                 className="object-cover"
                                 data={product.images.nodes[0]}
