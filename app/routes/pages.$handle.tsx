@@ -2,7 +2,7 @@ import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, type MetaFunction} from '@remix-run/react';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `SanArte | ${data?.page.title ?? ''}`}];
+  return [{title: `Hydrogen | ${data?.page.title ?? ''}`}];
 };
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -55,10 +55,9 @@ export default function Page() {
   const {page} = useLoaderData<typeof loader>();
 
   return (
-    <div className="page">
-      <header>
-        <h1>{page.title}</h1>
-      </header>
+    <div className="h-min py-4 px-16 space-y-4 max-w-screen-xl mx-auto">
+      <h1 className="font-playwrite font-normal text-2xl">{page.title}</h1>
+
       <main dangerouslySetInnerHTML={{__html: page.body}} />
     </div>
   );

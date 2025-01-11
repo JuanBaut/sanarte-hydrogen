@@ -125,20 +125,18 @@ function RecommendedProducts({
                       >
                         <Link to={`/products/${product.handle}`}>
                           <Card className="aspect-square">
-                            <CardHeader>
-                              <CardTitle>
-                                <h4>{product.title}</h4>
-                              </CardTitle>
-                            </CardHeader>
-                            <CardContent>
+                            <CardContent className="px-0 overflow-hidden rounded-xl">
                               <Image
-                                className="rounded"
+                                className="object-cover"
                                 data={product.images.nodes[0]}
                                 aspectRatio="1/1"
                                 sizes="(min-width: 45em) 20vw, 50vw"
                               />
                             </CardContent>
-                            <CardFooter>
+                            <CardFooter className="flex flex-col items-start">
+                              <CardTitle>
+                                <h4>{product.title}</h4>
+                              </CardTitle>
                               <small>
                                 <Money
                                   data={product.priceRange.minVariantPrice}

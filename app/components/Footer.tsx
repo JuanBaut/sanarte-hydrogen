@@ -20,14 +20,14 @@ export function Footer({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="text-lg font-semibold mb-4">About Us</h3>
+              <h3 className="text-xl mb-4 font-playwrite">Sobre Nosotros</h3>
               <p className="">
-                SanArte is your destination for curated, high-quality products
-                that bring elegance to your everyday life.
+                SanArte es tu destino para productos seleccionados de alta
+                calidad que aportan elegancia a tu vida cotidiana.
               </p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+              <h3 className="text-xl mb-4 font-playwrite">Más enlaces</h3>
               <ul className="space-y-2">
                 <li>Products</li>
                 <li>About</li>
@@ -37,10 +37,10 @@ export function Footer({
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-4">Newsletter</h3>
+              <h3 className="text-xl mb-4 font-playwrite">Boletín</h3>
               <p className="mb-4">
-                Subscribe to our newsletter for the latest updates and exclusive
-                offers.
+                Suscríbete a nuestro boletín para recibir las últimas novedades
+                y ofertas exclusivas.
               </p>
               <form className="flex">
                 <input

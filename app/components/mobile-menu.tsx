@@ -4,7 +4,9 @@ import type {CartApiQueryFragment, HeaderQuery} from 'storefrontapi.generated';
 import {FALLBACK_HEADER_MENU} from './Header';
 import {
   Sheet,
+  SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -34,6 +36,9 @@ export default function MobileMenu({
         <SheetContent side={'right'}>
           <SheetHeader>
             <SheetTitle>SanArte</SheetTitle>
+            <SheetDescription>
+              La boutique que decora con alma.
+            </SheetDescription>
           </SheetHeader>
 
           <div role="navigation" className="flex flex-col space-y-4 pt-4">
@@ -49,7 +54,7 @@ export default function MobileMenu({
                   : item.url;
               return (
                 <NavLink end key={item.id} prefetch="intent" to={url}>
-                  <SheetTrigger className="text-2xl">{item.title}</SheetTrigger>
+                  <SheetClose className="text-2xl">{item.title}</SheetClose>
                 </NavLink>
               );
             })}
