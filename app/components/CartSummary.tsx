@@ -1,22 +1,17 @@
-import type { CartApiQueryFragment } from "storefrontapi.generated";
-import type { CartLayout } from "~/components/CartMain";
+import { FetcherWithComponents } from "@remix-run/react";
 import { CartForm, Money, type OptimisticCart } from "@shopify/hydrogen";
 import { useRef } from "react";
-import { FetcherWithComponents } from "@remix-run/react";
+import type { CartApiQueryFragment } from "storefrontapi.generated";
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
-  layout: CartLayout;
 };
 
-export function CartSummary({ cart, layout }: CartSummaryProps) {
-  const className =
-    layout === "page" ? "cart-summary-page" : "cart-summary-aside";
-
+export function CartSummary({ cart }: CartSummaryProps) {
   return (
-    <div aria-labelledby="cart-summary" className={className}>
+    <div aria-labelledby="cart-summary">
       <h4>Totals</h4>
-      <dl className="cart-subtotal">
+      <dl>
         <dt>Subtotal</dt>
         <dd>
           {cart.cost?.subtotalAmount?.amount ? (
@@ -62,7 +57,7 @@ function CartDiscounts({
         <div>
           <dt>Discount(s)</dt>
           <UpdateDiscountForm>
-            <div className="cart-discount">
+            <div>
               <code>{codes?.join(", ")}</code>
               &nbsp;
               <button>Remove</button>
@@ -132,7 +127,7 @@ function CartGiftCard({
         <div>
           <dt>Applied Gift Card(s)</dt>
           <UpdateGiftCardForm>
-            <div className="cart-discount">
+            <div>
               <code>{codes?.join(", ")}</code>
               &nbsp;
               <button onSubmit={() => removeAppliedCode}>Remove</button>

@@ -18,7 +18,7 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
-        icon: "hover:bg-secondary [&_svg]:size-6 hover:text-accent-foreground",
+        icon: "hover:bg-secondary [&_svg]:size-5 hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -55,4 +55,28 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-export { Button, buttonVariants };
+export interface FakeButtonProps
+  extends Omit<React.HTMLProps<HTMLDivElement>, "size">,
+    VariantProps<typeof buttonVariants> {
+  className: string;
+  children: React.ReactNode;
+}
+
+function FakeButton({
+  children,
+  className,
+  variant,
+  size,
+  ...props
+}: FakeButtonProps) {
+  return (
+    <div
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props} // This will pass any other props, including onClick, to the div
+    >
+      {children}
+    </div>
+  );
+}
+
+export { Button, FakeButton, buttonVariants };

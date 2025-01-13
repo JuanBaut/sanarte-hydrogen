@@ -21,7 +21,7 @@ interface props {
   publicStoreDomain: string;
 }
 
-export default function MobileMenu({
+export default function MobileAside({
   menu,
   primaryDomainUrl,
   publicStoreDomain,
