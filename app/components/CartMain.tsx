@@ -1,8 +1,11 @@
-import { Link } from "@remix-run/react";
+import { useNavigate } from "@remix-run/react";
 import { useOptimisticCart } from "@shopify/hydrogen";
+import { ArrowRight } from "lucide-react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
 import { CartLineItem } from "~/components/CartLineItem";
 import { CartSummary } from "./CartSummary";
+import { FakeButton } from "./ui/button";
+import { SheetClose } from "./ui/sheet";
 
 export type CartMainProps = {
   cart: CartApiQueryFragment | null;
@@ -25,34 +28,42 @@ export function CartMain({ cart: originalCart }: CartMainProps) {
   //const className = `cart-main ${withDiscount ? "with-discount" : ""}`;
 
   return (
-    <div>
+    <>
       <CartEmpty hidden={linesCount} />
-      <div>
-        <div aria-labelledby="cart-lines">
-          <ul>
-            {(cart?.lines?.nodes ?? []).map((line) => (
-              <CartLineItem key={line.id} line={line} />
-            ))}
-          </ul>
+      <div className="flex h-full max-h-full flex-col justify-between gap-2">
+        <div
+          className="flex flex-grow-0 flex-col gap-2 overflow-auto"
+          aria-labelledby="cart-lines"
+        >
+          {(cart?.lines?.nodes ?? []).map((line) => (
+            <CartLineItem key={line.id} line={line} />
+          ))}
         </div>
         {cartHasItems && <CartSummary cart={cart} />}
       </div>
-    </div>
+    </>
   );
 }
 
 function CartEmpty({ hidden = false }: { hidden: boolean }) {
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    navigate("/collections/all");
+  };
+
   return (
-    <div hidden={hidden}>
-      <br />
-      <p>
-        Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
-        started!
-      </p>
-      <br />
-      <Link to="/collections" prefetch="viewport">
-        Continue shopping →
-      </Link>
+    <div hidden={hidden} className="space-y-4 pt-8">
+      <p>¡Parece que aún no has agregado nada!</p>
+      <SheetClose>
+        <FakeButton
+          onClick={handleClose}
+          className="flex gap-2"
+          variant={"outline"}
+        >
+          Seguir comprando <ArrowRight className="size-5" />
+        </FakeButton>
+      </SheetClose>
     </div>
   );
 }

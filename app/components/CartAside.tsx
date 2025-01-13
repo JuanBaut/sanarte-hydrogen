@@ -1,13 +1,9 @@
+import { Await } from "@remix-run/react";
+import { Suspense } from "react";
 import CartButton from "./CartButton";
+import { CartMain } from "./CartMain";
 import { HeaderProps } from "./Header";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "./ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
 
 export default function CartAside({ cart }: Pick<HeaderProps, "cart">) {
   return (
@@ -15,12 +11,12 @@ export default function CartAside({ cart }: Pick<HeaderProps, "cart">) {
       <SheetTrigger className="flex h-full">
         <CartButton cart={cart} />
       </SheetTrigger>
-      <SheetContent side={"right"}>
-        <SheetHeader>
-          <SheetTitle>Cart</SheetTitle>
-          <SheetDescription />
-        </SheetHeader>
-        this will be the cart content
+      <SheetContent className="sm:max-w-xl" side={"right"}>
+        <SheetTitle className="pb-4">Carrito</SheetTitle>
+
+        <Suspense>
+          <Await resolve={cart}>{(cart) => <CartMain cart={cart} />}</Await>
+        </Suspense>
       </SheetContent>
     </Sheet>
   );

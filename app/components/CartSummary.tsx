@@ -1,5 +1,6 @@
 import { FetcherWithComponents } from "@remix-run/react";
 import { CartForm, Money, type OptimisticCart } from "@shopify/hydrogen";
+import { ChevronRight } from "lucide-react";
 import { useRef } from "react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
 
@@ -9,7 +10,10 @@ type CartSummaryProps = {
 
 export function CartSummary({ cart }: CartSummaryProps) {
   return (
-    <div aria-labelledby="cart-summary">
+    <div
+      className="mb-6 space-y-1 border-t py-4"
+      aria-labelledby="cart-summary"
+    >
       <h4>Totals</h4>
       <dl>
         <dt>Subtotal</dt>
@@ -31,12 +35,9 @@ function CartCheckoutActions({ checkoutUrl }: { checkoutUrl?: string }) {
   if (!checkoutUrl) return null;
 
   return (
-    <div>
-      <a href={checkoutUrl} target="_self">
-        <p>Continue to Checkout &rarr;</p>
-      </a>
-      <br />
-    </div>
+    <a href={checkoutUrl} target="_self" className="flex gap-2">
+      Continue to Checkout <ChevronRight />
+    </a>
   );
 }
 
