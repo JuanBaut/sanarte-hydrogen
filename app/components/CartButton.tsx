@@ -21,13 +21,19 @@ export default function CartButton({ cart }: Pick<HeaderProps, "cart">) {
     <FakeButton
       size={"icon"}
       variant={"icon"}
-      className="flex w-fit px-2"
+      className="flex w-fit gap-1 px-2"
       aria-label="View cart"
       onClick={handleAnalytics}
     >
       <ShoppingCart />
       <Suspense fallback={<span>&nbsp;</span>}>
-        <Await resolve={cart}>{(cart) => cart?.totalQuantity || 0}</Await>
+        <Await resolve={cart}>
+          {(cart) => (
+            <div className="flex size-[17px] justify-center rounded-full bg-secondary align-middle text-xs text-accent-foreground">
+              <p className="self-center">{cart?.totalQuantity || 0}</p>
+            </div>
+          )}
+        </Await>
       </Suspense>
     </FakeButton>
   );
