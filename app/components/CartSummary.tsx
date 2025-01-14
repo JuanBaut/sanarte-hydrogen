@@ -3,6 +3,7 @@ import { CartForm, Money, type OptimisticCart } from "@shopify/hydrogen";
 import { ChevronRight } from "lucide-react";
 import { useRef } from "react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
+import { Button } from "./ui/button";
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
@@ -14,8 +15,7 @@ export function CartSummary({ cart }: CartSummaryProps) {
       className="mb-6 space-y-1 border-t py-4"
       aria-labelledby="cart-summary"
     >
-      <h4>Totals</h4>
-      <dl>
+      <dl className="flex justify-between text-lg font-medium sm:text-xl">
         <dt>Subtotal</dt>
         <dd>
           {cart.cost?.subtotalAmount?.amount ? (
@@ -25,8 +25,11 @@ export function CartSummary({ cart }: CartSummaryProps) {
           )}
         </dd>
       </dl>
-      <CartDiscounts discountCodes={cart.discountCodes} />
-      <CartGiftCard giftCardCodes={cart.appliedGiftCards} />
+      <span className="text-sm">
+        Impuestos y envío calculados al finalizar la compra.
+      </span>
+      {/*<CartDiscounts discountCodes={cart.discountCodes} />*/}
+      {/*<CartGiftCard giftCardCodes={cart.appliedGiftCards} />*/}
       <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
     </div>
   );
@@ -36,7 +39,10 @@ function CartCheckoutActions({ checkoutUrl }: { checkoutUrl?: string }) {
 
   return (
     <a href={checkoutUrl} target="_self" className="flex gap-2">
-      Continue to Checkout <ChevronRight />
+      <Button className="text-md mt-4 w-full" size="icon" variant={"secondary"}>
+        Continuar con el pago
+        <ChevronRight strokeWidth={2.25} />
+      </Button>
     </a>
   );
 }

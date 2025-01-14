@@ -34,6 +34,14 @@ export function Header({
           publicStoreDomain={publicStoreDomain}
         />
 
+        <div className="mx-1 h-full place-self-start sm:hidden">
+          <MobileAside
+            menu={menu}
+            primaryDomainUrl={header.shop.primaryDomain.url}
+            publicStoreDomain={publicStoreDomain}
+          />
+        </div>
+
         <NavLink className="self-center" prefetch="intent" to="/">
           <div className="mx-auto w-fit">
             <Image
@@ -48,12 +56,8 @@ export function Header({
 
         <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
 
-        <div className="col-start-3 mx-2 h-full place-self-end">
-          <MobileAside
-            menu={menu}
-            primaryDomainUrl={header.shop.primaryDomain.url}
-            publicStoreDomain={publicStoreDomain}
-          />
+        <div className="col-start-3 mx-1 h-full place-self-end sm:hidden">
+          <CartAside cart={cart} />
         </div>
       </div>
     </header>
@@ -117,7 +121,6 @@ function HeaderCtas({
       </NavLink>
 
       <SearchToggle />
-
       <CartAside cart={cart} />
     </nav>
   );

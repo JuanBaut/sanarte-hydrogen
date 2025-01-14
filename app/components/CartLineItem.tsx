@@ -23,11 +23,11 @@ export function CartLineItem({ line }: { line: CartLine }) {
   return (
     <Card
       key={id}
-      className="flex flex-row gap-2 space-y-0 border-none p-2 shadow-none"
+      className="flex flex-row gap-2 space-y-0 border-none py-2 shadow-none"
     >
       {image && (
         <Image
-          className="rounded"
+          className="size-24 rounded sm:size-40"
           aspectRatio="1/1"
           alt={title}
           data={image}
@@ -37,16 +37,16 @@ export function CartLineItem({ line }: { line: CartLine }) {
         />
       )}
 
-      <div className="flex w-full flex-col">
-        <div className="flex w-full items-start justify-between text-lg font-medium leading-none">
-          <Link prefetch="intent" to={lineItemUrl}>
+      <div className="flex w-full flex-col gap-2">
+        <div className="flex w-full flex-wrap items-start justify-between gap-2 text-sm font-medium leading-none sm:text-lg">
+          <Link className="font-medium" prefetch="intent" to={lineItemUrl}>
             <SheetClose>{product.title}</SheetClose>
           </Link>
 
           <ProductPrice price={line?.cost?.totalAmount} />
         </div>
 
-        <div className="flex h-full flex-col justify-between">
+        <div className="flex h-full flex-col justify-between leading-none">
           {selectedOptions.map((option) => (
             <div key={option.name}>
               <small>
@@ -125,7 +125,13 @@ function CartLineRemoveButton({
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{ lineIds }}
     >
-      <Button size={"icon"} variant={"icon"} disabled={disabled} type="submit">
+      <Button
+        size={"icon"}
+        className="[&_svg]:size-5"
+        variant={"icon"}
+        disabled={disabled}
+        type="submit"
+      >
         <Trash />
       </Button>
     </CartForm>

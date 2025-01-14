@@ -11,7 +11,7 @@ export default function CartAside({ cart }: Pick<HeaderProps, "cart">) {
       <SheetTrigger className="flex h-full">
         <CartButton cart={cart} />
       </SheetTrigger>
-      <SheetContent className="sm:max-w-xl" side={"right"}>
+      <SheetContent className="w-[90%] sm:max-w-xl" side={"right"}>
         <SheetTitle className="pb-4">Carrito</SheetTitle>
 
         <Suspense>

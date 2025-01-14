@@ -21,7 +21,7 @@ export default function CartButton({ cart }: Pick<HeaderProps, "cart">) {
     <FakeButton
       size={"icon"}
       variant={"icon"}
-      className="flex w-fit gap-1 px-2"
+      className="flex w-fit gap-1 self-center px-2"
       aria-label="View cart"
       onClick={handleAnalytics}
     >

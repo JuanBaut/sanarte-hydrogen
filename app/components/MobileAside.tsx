@@ -5,6 +5,7 @@ import type {
   HeaderQuery,
 } from "storefrontapi.generated";
 import { FALLBACK_HEADER_MENU } from "./Header";
+import { FakeButton } from "./ui/button";
 import {
   Sheet,
   SheetClose,
@@ -32,8 +33,10 @@ export default function MobileAside({
 }) {
   return (
     <Sheet>
-      <SheetTrigger className="flex h-full sm:hidden">
-        <Menu className="size-7 self-center text-primary-foreground" />
+      <SheetTrigger className="flex h-full">
+        <FakeButton className="self-center" variant={"icon"} size={"icon"}>
+          <Menu className="self-center text-primary-foreground" />
+        </FakeButton>
       </SheetTrigger>
       <SheetContent side={"right"}>
         <SheetHeader>

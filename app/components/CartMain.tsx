@@ -53,15 +53,14 @@ function CartEmpty({ hidden = false }: { hidden: boolean }) {
   };
 
   return (
-    <div hidden={hidden} className="space-y-4 pt-8">
-      <p>¡Parece que aún no has agregado nada!</p>
+    <div
+      hidden={hidden}
+      className="flex flex-col justify-center space-y-4 pt-8"
+    >
+      <p className="w-fit">¡Parece que aún no has agregado nada!</p>
       <SheetClose>
-        <FakeButton
-          onClick={handleClose}
-          className="flex gap-2"
-          variant={"outline"}
-        >
-          Seguir comprando <ArrowRight className="size-5" />
+        <FakeButton onClick={handleClose} variant={"outline"}>
+          Seguir comprando <ArrowRight />
         </FakeButton>
       </SheetClose>
     </div>
