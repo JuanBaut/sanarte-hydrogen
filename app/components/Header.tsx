@@ -7,7 +7,7 @@ import type {
   HeaderQuery,
 } from "storefrontapi.generated";
 import logo from "~/assets/logo.png";
-import CartAside from "./CartAside";
+import CartAside from "./cart/CartAside";
 import MobileAside from "./MobileAside";
 import { Button } from "./ui/button";
 

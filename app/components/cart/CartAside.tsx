@@ -1,9 +1,9 @@
 import { Await } from "@remix-run/react";
 import { Suspense } from "react";
+import { HeaderProps } from "../Header";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import CartButton from "./CartButton";
 import { CartMain } from "./CartMain";
-import { HeaderProps } from "./Header";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
 
 export default function CartAside({ cart }: Pick<HeaderProps, "cart">) {
   return (

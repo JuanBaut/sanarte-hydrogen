@@ -2,10 +2,10 @@ import { useNavigate } from "@remix-run/react";
 import { useOptimisticCart } from "@shopify/hydrogen";
 import { ArrowRight } from "lucide-react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
-import { CartLineItem } from "~/components/CartLineItem";
+import { CartLineItem } from "~/components/cart/CartLineItem";
+import { FakeButton } from "../ui/button";
+import { SheetClose } from "../ui/sheet";
 import { CartSummary } from "./CartSummary";
-import { FakeButton } from "./ui/button";
-import { SheetClose } from "./ui/sheet";
 
 export type CartMainProps = {
   cart: CartApiQueryFragment | null;
@@ -53,16 +53,16 @@ function CartEmpty({ hidden = false }: { hidden: boolean }) {
   };
 
   return (
-    <div
-      hidden={hidden}
-      className="flex flex-col justify-center space-y-4 pt-8"
-    >
-      <p className="w-fit">¡Parece que aún no has agregado nada!</p>
-      <SheetClose>
-        <FakeButton onClick={handleClose} variant={"outline"}>
-          Seguir comprando <ArrowRight />
-        </FakeButton>
-      </SheetClose>
+    <div hidden={hidden}>
+      <div className="grid grid-rows-2 place-items-center pt-8">
+        <p className="w-fit">¡Parece que aún no has agregado nada!</p>
+
+        <SheetClose onClick={handleClose}>
+          <FakeButton variant={"ghost"}>
+            Seguir comprando <ArrowRight />
+          </FakeButton>
+        </SheetClose>
+      </div>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { CartForm, Money, type OptimisticCart } from "@shopify/hydrogen";
 import { ChevronRight } from "lucide-react";
 import { useRef } from "react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;

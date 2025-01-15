@@ -4,10 +4,10 @@ import type { CartLineUpdateInput } from "@shopify/hydrogen/storefront-api-types
 import { Minus, Plus, Trash } from "lucide-react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
 import { useVariantUrl } from "~/lib/variants";
-import { ProductPrice } from "./ProductPrice";
-import { Button } from "./ui/button";
-import { Card } from "./ui/card";
-import { SheetClose } from "./ui/sheet";
+import { ProductPrice } from "../ProductPrice";
+import { Button } from "../ui/button";
+import { Card } from "../ui/card";
+import { SheetClose } from "../ui/sheet";
 
 type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 
