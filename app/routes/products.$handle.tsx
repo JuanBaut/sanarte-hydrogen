@@ -1,16 +1,16 @@
-import { defer, type LoaderFunctionArgs } from "@shopify/remix-oxygen";
 import { useLoaderData, type MetaFunction } from "@remix-run/react";
 import {
-  getSelectedProductOptions,
   Analytics,
-  useOptimisticVariant,
-  getProductOptions,
   getAdjacentAndFirstAvailableVariants,
+  getProductOptions,
+  getSelectedProductOptions,
+  useOptimisticVariant,
   useSelectedOptionInUrlParam,
 } from "@shopify/hydrogen";
-import { ProductPrice } from "~/components/ProductPrice";
-import { ProductImage } from "~/components/ProductImage";
-import { ProductForm } from "~/components/ProductForm";
+import { defer, type LoaderFunctionArgs } from "@shopify/remix-oxygen";
+import { ProductForm } from "~/components/product/ProductForm";
+import { ProductImage } from "~/components/product/ProductImage";
+import { ProductPrice } from "~/components/product/ProductPrice";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
@@ -55,6 +55,7 @@ async function loadCriticalData({
         selectedOptions: getSelectedProductOptions(request),
       },
     }),
+    //quatity,
     // Add other queries here, so that they are loaded in parallel
   ]);
 
@@ -101,28 +102,28 @@ export default function Product() {
   const { title, descriptionHtml } = product;
 
   return (
-    <div className="product">
+    <div className="mx-auto flex max-w-screen-xl flex-col gap-4 p-4 sm:flex-row md:gap-8 md:p-8">
       <ProductImage image={selectedVariant?.image} />
-      <div className="product-main">
-        <h1>{title}</h1>
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
-        />
-        <br />
+
+      <div className="basis-2/5 space-y-4">
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-900">{title}</h1>
+          <ProductPrice
+            price={selectedVariant?.price}
+            className="text-xl font-light"
+            compareAtPrice={selectedVariant?.compareAtPrice}
+          />
+        </div>
         <ProductForm
           productOptions={productOptions}
           selectedVariant={selectedVariant}
         />
-        <br />
-        <br />
-        <p>
-          <strong>Description</strong>
-        </p>
-        <br />
-        <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
-        <br />
+        <div>
+          <h2 className="font-medium">Descripción</h2>
+          <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
+        </div>
       </div>
+
       <Analytics.ProductView
         data={{
           products: [
@@ -165,11 +166,13 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
     product {
       title
       handle
+      totalInventory
     }
     selectedOptions {
       name
       value
     }
+    quantityAvailable
     sku
     title
     unitPrice {
@@ -185,8 +188,8 @@ const PRODUCT_FRAGMENT = `#graphql
     title
     vendor
     handle
-    descriptionHtml
     description
+    descriptionHtml
     encodedVariantExistence
     encodedVariantAvailability
     options {

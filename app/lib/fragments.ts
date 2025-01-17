@@ -48,6 +48,7 @@ export const CART_QUERY_FRAGMENT = `#graphql
           id
           vendor
         }
+        quantityAvailable
         selectedOptions {
           name
           value

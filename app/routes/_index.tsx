@@ -11,13 +11,7 @@ import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from "storefrontapi.generated";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import { Card, CardContent, CardFooter, CardTitle } from "~/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -129,25 +123,25 @@ function RecommendedProducts({
                         className="aspect-square max-w-[340px] sm:basis-1/2 md:basis-1/3 xl:basis-1/4"
                       >
                         <Link to={`/products/${product.handle}`}>
-                          <Card className="aspect-square">
-                            <CardContent className="overflow-hidden rounded-xl px-0">
+                          <Card>
+                            <CardContent className="space-y-4 p-0">
                               <Image
                                 className="object-cover"
                                 data={product.images.nodes[0]}
                                 aspectRatio="1/1"
                                 sizes="(min-width: 45em) 20vw, 50vw"
                               />
+                              <CardFooter className="flex flex-col items-start">
+                                <CardTitle>
+                                  <h4>{product.title}</h4>
+                                </CardTitle>
+                                <small>
+                                  <Money
+                                    data={product.priceRange.minVariantPrice}
+                                  />
+                                </small>
+                              </CardFooter>
                             </CardContent>
-                            <CardFooter className="flex flex-col items-start">
-                              <CardTitle>
-                                <h4>{product.title}</h4>
-                              </CardTitle>
-                              <small>
-                                <Money
-                                  data={product.priceRange.minVariantPrice}
-                                />
-                              </small>
-                            </CardFooter>
                           </Card>
                         </Link>
                       </CarouselItem>
