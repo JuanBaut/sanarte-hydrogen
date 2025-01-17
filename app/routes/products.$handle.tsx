@@ -103,7 +103,7 @@ export default function Product() {
 
   return (
     <div className="mx-auto flex max-w-screen-xl flex-col gap-4 p-4 sm:flex-row md:gap-8 md:p-8">
-      <ProductImage image={selectedVariant?.image} />
+      <ProductImage images={product?.images.edges} />
 
       <div className="basis-2/5 space-y-4">
         <div>
@@ -186,6 +186,17 @@ const PRODUCT_FRAGMENT = `#graphql
   fragment Product on Product {
     id
     title
+    images(first: 5) {
+      edges {
+        node {
+          id
+          altText
+          height
+          width
+          url
+        }
+      }
+    }
     vendor
     handle
     description

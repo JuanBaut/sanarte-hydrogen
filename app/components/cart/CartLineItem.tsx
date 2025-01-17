@@ -20,8 +20,6 @@ export function CartLineItem({ line }: { line: CartLine }) {
     merchandise;
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
 
-  console.log(selectedOptions);
-
   return (
     <Card
       key={id}

@@ -111,7 +111,7 @@ function RecommendedProducts({
         Productos Recomendados
       </h2>
 
-      <Carousel className="">
+      <Carousel>
         <Suspense fallback={<div>Cargando...</div>}>
           <Await resolve={products}>
             {(response) => (
