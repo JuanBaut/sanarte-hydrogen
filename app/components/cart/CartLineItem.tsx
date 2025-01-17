@@ -1,6 +1,9 @@
 import { Link } from "@remix-run/react";
 import { CartForm, Image, type OptimisticCartLine } from "@shopify/hydrogen";
-import type { CartLineUpdateInput } from "@shopify/hydrogen/storefront-api-types";
+import type {
+  CartLineUpdateInput,
+  Maybe,
+} from "@shopify/hydrogen/storefront-api-types";
 import { Minus, Plus, Trash } from "lucide-react";
 import type { CartApiQueryFragment } from "storefrontapi.generated";
 import { useVariantUrl } from "~/lib/variants";
@@ -64,12 +67,17 @@ function CartLineQuantity({
   quantityAvailable,
 }: {
   line: CartLine;
-  quantityAvailable: number;
+  quantityAvailable?: Maybe<number>;
 }) {
-  if (!line || typeof line?.quantity === "undefined") return null;
+  if (!line || typeof line.quantity === "undefined") return null;
   const { id: lineId, quantity, isOptimistic } = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
+
+  const isDecreaseDisabled = quantity <= 1 || !!isOptimistic;
+  const isIncreaseDisabled = quantityAvailable
+    ? nextQuantity > quantityAvailable
+    : !!isOptimistic;
 
   return (
     <div className="flex justify-between">
@@ -78,7 +86,7 @@ function CartLineQuantity({
           name="decrease-quantity"
           ariaLabel="Decrease quantity"
           value={prevQuantity}
-          disabled={quantity <= 1 || !!isOptimistic}
+          disabled={isDecreaseDisabled}
           lines={[{ id: lineId, quantity: prevQuantity }]}
         >
           <Minus />
@@ -88,7 +96,7 @@ function CartLineQuantity({
           name="increase-quantity"
           ariaLabel="Increase quantity"
           value={nextQuantity}
-          disabled={nextQuantity === quantityAvailable + 1 || !!isOptimistic}
+          disabled={isIncreaseDisabled}
           lines={[{ id: lineId, quantity: nextQuantity }]}
         >
           <Plus />
@@ -125,15 +133,6 @@ function CartLineRemoveButton({
   );
 }
 
-interface CartLineUpdateProps {
-  name: string;
-  value: number;
-  disabled: boolean;
-  ariaLabel: string;
-  children: React.ReactNode;
-  lines: CartLineUpdateInput[];
-}
-
 function CartLineUpdateButton({
   ariaLabel,
   disabled,
@@ -141,7 +140,14 @@ function CartLineUpdateButton({
   value,
   lines,
   name,
-}: CartLineUpdateProps) {
+}: {
+  name: string;
+  value: number;
+  disabled: boolean;
+  ariaLabel: string;
+  children: React.ReactNode;
+  lines: CartLineUpdateInput[];
+}) {
   return (
     <CartForm
       route="/cart"

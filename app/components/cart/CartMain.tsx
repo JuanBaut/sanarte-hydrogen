@@ -27,8 +27,6 @@ export function CartMain({ cart: originalCart }: CartMainProps) {
   //  Boolean(cart?.discountCodes?.filter((code) => code.applicable)?.length);
   //const className = `cart-main ${withDiscount ? "with-discount" : ""}`;
 
-  console.log(cart);
-
   return (
     <>
       <CartEmpty hidden={linesCount} />
