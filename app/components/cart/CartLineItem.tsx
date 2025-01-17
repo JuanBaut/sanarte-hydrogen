@@ -20,6 +20,8 @@ export function CartLineItem({ line }: { line: CartLine }) {
     merchandise;
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
 
+  console.log(selectedOptions);
+
   return (
     <Card
       key={id}
@@ -40,21 +42,22 @@ export function CartLineItem({ line }: { line: CartLine }) {
       <div className="flex w-full flex-col gap-2">
         <div className="flex w-full flex-wrap items-start justify-between gap-2 text-sm font-medium leading-none sm:text-lg">
           <Link className="font-medium" prefetch="intent" to={lineItemUrl}>
-            <SheetClose>{product.title}</SheetClose>
+            <SheetClose className="hover:underline">{product.title}</SheetClose>
           </Link>
 
           <ProductPrice price={line?.cost?.totalAmount} />
         </div>
 
         <div className="flex h-full flex-col justify-between leading-none">
-          {selectedOptions.map((option) => (
-            <div key={option.name}>
-              <small>
-                {option.name}: {option.value}
-              </small>
-            </div>
-          ))}
-
+          {selectedOptions.map((option) =>
+            option.name !== "Title" ? (
+              <div key={option.name}>
+                <small>
+                  {option.name}: {option.value}
+                </small>
+              </div>
+            ) : null,
+          )}
           <CartLineQuantity line={line} quantityAvailable={quantityAvailable} />
         </div>
       </div>
@@ -80,7 +83,7 @@ function CartLineQuantity({
     : !!isOptimistic;
 
   return (
-    <div className="flex justify-between">
+    <div className="mt-auto flex justify-between">
       <div className="flex gap-2 rounded-md border border-border/30">
         <CartLineUpdateButton
           name="decrease-quantity"
