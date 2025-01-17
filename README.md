@@ -6,17 +6,8 @@ A modern and responsive e-commerce platform built with [Shopify Hydrogen](https:
 
 - [Features](#features)
 - [What's Included](#whats-included)
-<<<<<<< HEAD
-- [Installation](#installation)
 - [Available Scripts](#available-scripts)
 - [Project Structure](#project-structure)
-- [Usage](#usage)
-- [Linting and Formatting](#linting-and-formatting)
-- [Code Generation](#code-generation)
-=======
-- [Available Scripts](#available-scripts)
-- [Project Structure](#project-structure)
->>>>>>> 5eff02b (chore(docs): updated readme)
 - [License](#license)
 
 ## Features
@@ -26,10 +17,6 @@ A modern and responsive e-commerce platform built with [Shopify Hydrogen](https:
 - **Accessible UI Components:** Utilizes [shadcn/ui](https://ui.shadcn.com/).
 - **Optimized Formatting:** Tailwind CSS with [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-plugin-tailwindcss) for efficient styling.
 - **TypeScript:** Robust type checking for reliable and maintainable code.
-<<<<<<< HEAD
-- **Automated Code Generation:** Streamlines GraphQL operations with Shopify codegen.
-=======
->>>>>>> 5eff02b (chore(docs): updated readme)
 
 ## What's Included
 
@@ -58,12 +45,6 @@ Runs the app in the development mode with code generation.
 pnpm dev
 ```
 
-<<<<<<< HEAD
-- **Hot Reloading:** Automatically reloads the page when you make changes.
-- **Code Generation:** Automatically generates TypeScript types based on your GraphQL queries.
-
-=======
->>>>>>> 5eff02b (chore(docs): updated readme)
 ### `pnpm build`
 
 Builds the app for production to the `.hydrogen` folder.
@@ -72,12 +53,6 @@ Builds the app for production to the `.hydrogen` folder.
 pnpm build
 ```
 
-<<<<<<< HEAD
-- **Optimized Build:** The build is minified, and the filenames include the hashes.
-- **Ready for Deployment:** Your app is ready to be deployed!
-
-=======
->>>>>>> 5eff02b (chore(docs): updated readme)
 ### `pnpm preview`
 
 Serves the build locally for previewing production builds.
@@ -88,27 +63,12 @@ pnpm preview
 
 ### `pnpm lint`
 
-<<<<<<< HEAD
-Runs ESLint to analyze code for potential errors and enforce code style.
-
-=======
->>>>>>> 5eff02b (chore(docs): updated readme)
 ```bash
 pnpm lint
 ```
 
-<<<<<<< HEAD
-- **No Error on Unmatched Patterns:** Configured to ignore unmatched files without throwing errors.
-- **Scans:** Files with extensions `.js`, `.ts`, `.jsx`, `.tsx`.
-
 ### `pnpm codegen`
 
-Generates TypeScript types and updates GraphQL operations.
-
-=======
-### `pnpm codegen`
-
->>>>>>> 5eff02b (chore(docs): updated readme)
 ```bash
 pnpm codegen
 ```
