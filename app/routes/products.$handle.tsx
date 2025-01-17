@@ -11,6 +11,7 @@ import { defer, type LoaderFunctionArgs } from "@shopify/remix-oxygen";
 import { ProductForm } from "~/components/product/ProductForm";
 import { ProductImage } from "~/components/product/ProductImage";
 import { ProductPrice } from "~/components/product/ProductPrice";
+import { RECOMMENDED_PRODUCTS_QUERY, RecommendedProducts } from "./_index";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
@@ -55,8 +56,6 @@ async function loadCriticalData({
         selectedOptions: getSelectedProductOptions(request),
       },
     }),
-    //quatity,
-    // Add other queries here, so that they are loaded in parallel
   ]);
 
   if (!product?.id) {
@@ -73,15 +72,21 @@ async function loadCriticalData({
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({ context, params }: LoaderFunctionArgs) {
-  // Put any API calls that is not critical to be available on first page render
-  // For example: product reviews, product recommendations, social feeds.
+function loadDeferredData({ context }: LoaderFunctionArgs) {
+  const recommendedProducts = context.storefront
+    .query(RECOMMENDED_PRODUCTS_QUERY)
+    .catch((error) => {
+      console.error(error);
+      return null;
+    });
 
-  return {};
+  return {
+    recommendedProducts,
+  };
 }
 
 export default function Product() {
-  const { product } = useLoaderData<typeof loader>();
+  const { product, recommendedProducts } = useLoaderData<typeof loader>();
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -102,44 +107,49 @@ export default function Product() {
   const { title, descriptionHtml } = product;
 
   return (
-    <div className="mx-auto flex max-w-screen-xl flex-col gap-4 p-4 sm:flex-row md:gap-8 md:p-8">
-      <ProductImage images={product?.images.edges} />
+    <>
+      <div className="mx-auto flex max-w-screen-xl flex-col gap-4 p-4 sm:flex-row md:gap-8 md:p-8">
+        <ProductImage images={product?.images.edges} />
 
-      <div className="basis-2/5 space-y-4">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900">{title}</h1>
-          <ProductPrice
-            price={selectedVariant?.price}
-            className="text-xl font-light"
-            compareAtPrice={selectedVariant?.compareAtPrice}
+        <div className="basis-2/5 space-y-4">
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-900">{title}</h1>
+            <ProductPrice
+              price={selectedVariant?.price}
+              className="text-xl font-light"
+              compareAtPrice={selectedVariant?.compareAtPrice}
+            />
+          </div>
+          <ProductForm
+            productOptions={productOptions}
+            selectedVariant={selectedVariant}
           />
+          <div>
+            <h2 className="font-medium">Descripción</h2>
+            <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
+          </div>
         </div>
-        <ProductForm
-          productOptions={productOptions}
-          selectedVariant={selectedVariant}
-        />
-        <div>
-          <h2 className="font-medium">Descripción</h2>
-          <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
-        </div>
-      </div>
 
-      <Analytics.ProductView
-        data={{
-          products: [
-            {
-              id: product.id,
-              title: product.title,
-              price: selectedVariant?.price.amount || "0",
-              vendor: product.vendor,
-              variantId: selectedVariant?.id || "",
-              variantTitle: selectedVariant?.title || "",
-              quantity: 1,
-            },
-          ],
-        }}
-      />
-    </div>
+        <Analytics.ProductView
+          data={{
+            products: [
+              {
+                id: product.id,
+                title: product.title,
+                price: selectedVariant?.price.amount || "0",
+                vendor: product.vendor,
+                variantId: selectedVariant?.id || "",
+                variantTitle: selectedVariant?.title || "",
+                quantity: 1,
+              },
+            ],
+          }}
+        />
+      </div>
+      <div className="mx-auto max-w-screen-xl border-t pb-4">
+        <RecommendedProducts products={recommendedProducts} />
+      </div>
+    </>
   );
 }
 

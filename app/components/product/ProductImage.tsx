@@ -9,6 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
+import { Badge } from "../ui/badge";
 
 export function ProductImage({
   images,
@@ -30,7 +31,7 @@ export function ProductImage({
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
-  }, [api]);
+  }, [api, images]);
 
   if (!images) {
     return null;
@@ -51,14 +52,14 @@ export function ProductImage({
           </CarouselItem>
         ))}
       </CarouselContent>
-      <div className="flex w-full justify-between gap-2 rounded-lg border border-border/70 px-4 py-2">
+      <div className="absolute top-0 flex w-full justify-between gap-2 rounded-lg px-2">
         <div className="space-x-2">
           <CarouselPrevious className="static transform-none" />
           <CarouselNext className="static transform-none" />
         </div>
-        <span className="self-center text-sm text-foreground/70">
+        <Badge className="self-center border-border bg-background hover:bg-secondary">
           Imagen {current} de {count}
-        </span>
+        </Badge>
       </div>
     </Carousel>
   );
