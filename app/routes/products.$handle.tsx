@@ -11,7 +11,8 @@ import { defer, type LoaderFunctionArgs } from "@shopify/remix-oxygen";
 import { ProductForm } from "~/components/product/ProductForm";
 import { ProductImage } from "~/components/product/ProductImage";
 import { ProductPrice } from "~/components/product/ProductPrice";
-import { RECOMMENDED_PRODUCTS_QUERY, RecommendedProducts } from "./_index";
+import { RecommendedProducts } from "~/components/RecommendedProducts";
+import { RECOMMENDED_PRODUCTS_QUERY } from "./_index";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [

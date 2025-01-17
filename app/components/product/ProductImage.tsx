@@ -1,5 +1,5 @@
 import { Image } from "@shopify/hydrogen";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { ProductFragment } from "storefrontapi.generated";
 import {
   Carousel,
@@ -17,28 +17,36 @@ export function ProductImage({
   images: ProductFragment["images"]["edges"];
 }) {
   const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
+  const [current, setCurrent] = React.useState(1);
   const [count, setCount] = React.useState(0);
 
   useEffect(() => {
-    if (!api) {
-      return;
+    setCurrent(1);
+    setCount(images.length);
+    if (api) {
+      api.scrollTo(0);
     }
+  }, [images, api]);
 
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
+  const handleApiChange = useCallback((newApi: CarouselApi) => {
+    setApi(newApi);
 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
-  }, [api, images]);
+    if (newApi) {
+      newApi.on("select", () => {
+        setCurrent(newApi.selectedScrollSnap() + 1);
+      });
 
-  if (!images) {
+      setCount(images.length);
+      setCurrent(newApi.selectedScrollSnap() + 1);
+    }
+  }, []);
+
+  if (!images || images.length === 0) {
     return null;
   }
 
   return (
-    <Carousel setApi={setApi} className="size-fit basis-3/5 space-y-2">
+    <Carousel setApi={handleApiChange} className="size-fit basis-3/5 space-y-2">
       <CarouselContent>
         {images.map((image) => (
           <CarouselItem key={image.node.id}>

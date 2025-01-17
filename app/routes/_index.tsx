@@ -1,24 +1,8 @@
-import {
-  Await,
-  Link,
-  useLoaderData,
-  type MetaFunction,
-} from "@remix-run/react";
-import { Image, Money } from "@shopify/hydrogen";
+import { Link, useLoaderData, type MetaFunction } from "@remix-run/react";
+import { Image } from "@shopify/hydrogen";
 import { defer, type LoaderFunctionArgs } from "@shopify/remix-oxygen";
-import { Suspense } from "react";
-import type {
-  FeaturedCollectionFragment,
-  RecommendedProductsQuery,
-} from "storefrontapi.generated";
-import { Card, CardContent, CardFooter, CardTitle } from "~/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "~/components/ui/carousel";
+import type { FeaturedCollectionFragment } from "storefrontapi.generated";
+import { RecommendedProducts } from "~/components/RecommendedProducts";
 
 export const meta: MetaFunction = () => {
   return [{ title: "SanArte | Home" }];
@@ -74,64 +58,6 @@ export default function Homepage() {
     <div>
       {/*<FeaturedCollection collection={data.featuredCollection} />*/}
       <RecommendedProducts products={data.recommendedProducts} />
-    </div>
-  );
-}
-
-export function RecommendedProducts({
-  products,
-}: {
-  products: Promise<RecommendedProductsQuery | null>;
-}) {
-  return (
-    <div className="mx-auto h-min max-w-screen-xl space-y-4 px-16 py-4">
-      <h2 className="font-playwrite text-2xl font-normal">
-        Productos Recomendados
-      </h2>
-
-      <Carousel>
-        <Suspense fallback={<div>Cargando...</div>}>
-          <Await resolve={products}>
-            {(response) => (
-              <CarouselContent>
-                {response
-                  ? response.products.nodes.map((product) => (
-                      <CarouselItem
-                        key={product.id}
-                        className="aspect-square max-w-[340px] sm:basis-1/2 md:basis-1/3 xl:basis-1/4"
-                      >
-                        <Link to={`/products/${product.handle}`}>
-                          <Card>
-                            <CardContent className="space-y-4 p-0">
-                              <Image
-                                className="object-cover"
-                                data={product.images.nodes[0]}
-                                aspectRatio="1/1"
-                                sizes="(min-width: 45em) 20vw, 50vw"
-                              />
-                              <CardFooter className="flex flex-col items-start">
-                                <CardTitle>
-                                  <h4>{product.title}</h4>
-                                </CardTitle>
-                                <small>
-                                  <Money
-                                    data={product.priceRange.minVariantPrice}
-                                  />
-                                </small>
-                              </CardFooter>
-                            </CardContent>
-                          </Card>
-                        </Link>
-                      </CarouselItem>
-                    ))
-                  : null}
-              </CarouselContent>
-            )}
-          </Await>
-        </Suspense>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
     </div>
   );
 }
