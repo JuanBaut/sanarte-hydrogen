@@ -4,16 +4,18 @@ import type {
   Maybe,
   ProductOptionValueSwatch,
 } from "@shopify/hydrogen/storefront-api-types";
-import type { ProductFragment } from "storefrontapi.generated";
+import type { ProductFragment, ProductQuery } from "storefrontapi.generated";
 import { AddToCartButton } from "./AddToCartButton";
 import { Badge } from "../ui/badge";
 
 export function ProductForm({
+  storeDomain,
   productOptions,
   selectedVariant,
 }: {
   productOptions: MappedProductOptions[];
   selectedVariant: ProductFragment["selectedOrFirstAvailableVariant"];
+  storeDomain: ProductQuery["shop"]["primaryDomain"]["url"];
 }) {
   const navigate = useNavigate();
 
@@ -93,6 +95,8 @@ export function ProductForm({
         );
       })}
       <AddToCartButton
+        selectedVariant={selectedVariant}
+        storeDomain={storeDomain}
         disabled={!selectedVariant || !selectedVariant.availableForSale}
         lines={
           selectedVariant

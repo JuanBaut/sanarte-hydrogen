@@ -50,7 +50,7 @@ async function loadCriticalData({
     throw new Error("Expected product handle to be defined");
   }
 
-  const [{ product }] = await Promise.all([
+  const [{ product, shop }] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
       variables: {
         handle,
@@ -65,6 +65,7 @@ async function loadCriticalData({
 
   return {
     product,
+    storeDomain: shop.primaryDomain.url,
   };
 }
 
@@ -87,7 +88,8 @@ function loadDeferredData({ context }: LoaderFunctionArgs) {
 }
 
 export default function Product() {
-  const { product, recommendedProducts } = useLoaderData<typeof loader>();
+  const { product, recommendedProducts, storeDomain } =
+    useLoaderData<typeof loader>();
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -122,6 +124,7 @@ export default function Product() {
             />
           </div>
           <ProductForm
+            storeDomain={storeDomain}
             productOptions={productOptions}
             selectedVariant={selectedVariant}
           />
@@ -254,6 +257,12 @@ const PRODUCT_QUERY = `#graphql
   ) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       ...Product
+    }
+    shop {
+      name
+      primaryDomain {
+        url
+      }
     }
   }
   ${PRODUCT_FRAGMENT}
