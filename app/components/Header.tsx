@@ -26,7 +26,7 @@ export function Header({
 }: HeaderProps) {
   const { shop, menu } = header;
   return (
-    <header className="fixed z-50 h-20 w-full border-b bg-background/50 px-4 py-2 backdrop-blur-md">
+    <header className="fixed z-50 h-20 w-full border-b border-border/20 bg-background/50 px-4 py-2 backdrop-blur-md">
       <div className="grid w-full grid-cols-3 justify-items-center">
         <HeaderMenu
           menu={menu}
