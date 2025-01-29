@@ -13,6 +13,7 @@ import { ProductImage } from "~/components/product/ProductImage";
 import { ProductPrice } from "~/components/product/ProductPrice";
 import { RecommendedProducts } from "~/components/RecommendedProducts";
 import { RECOMMENDED_PRODUCTS_QUERY } from "./_index";
+import { Separator } from "~/components/ui/separator";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
@@ -25,12 +26,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export async function loader(args: LoaderFunctionArgs) {
-  // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
-
   return defer({ ...deferredData, ...criticalData });
 }
 
@@ -150,7 +147,10 @@ export default function Product() {
           }}
         />
       </div>
-      <div className="mx-auto max-w-screen-xl border-t pb-4">
+      <div className="mx-auto w-full max-w-screen-xl px-8">
+        <Separator />
+      </div>
+      <div className="mx-auto max-w-screen-xl pb-4">
         <RecommendedProducts products={recommendedProducts} />
       </div>
     </>
