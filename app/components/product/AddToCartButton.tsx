@@ -24,7 +24,11 @@ export function AddToCartButton({
   storeDomain: ProductQuery["shop"]["primaryDomain"]["url"];
   selectedVariant: ProductFragment["selectedOrFirstAvailableVariant"];
 }) {
-  const variantsId = selectedVariant?.id;
+  const array: string[] = [];
+
+  if (selectedVariant?.id) {
+    array.push(selectedVariant?.id);
+  }
 
   return (
     <CartForm
@@ -40,22 +44,24 @@ export function AddToCartButton({
             value={JSON.stringify(analytics)}
           />
 
-          <Button
-            type="submit"
-            disabled={disabled ?? fetcher.state !== "idle"}
-            variant={"secondary"}
-            className="w-full"
-          >
-            {children}
-            <ShoppingCart />
-          </Button>
-          {selectedVariant ? (
-            <ShopPayButton
-              width="100%"
-              variantIds={variantsId}
-              storeDomain={storeDomain}
-            />
-          ) : null}
+          <div className="space-y-4">
+            <Button
+              type="submit"
+              disabled={disabled ?? fetcher.state !== "idle"}
+              variant={"secondary"}
+              className="w-full"
+            >
+              {children}
+              <ShoppingCart />
+            </Button>
+            {selectedVariant ? (
+              <ShopPayButton
+                width="100%"
+                variantIds={array}
+                storeDomain={storeDomain}
+              />
+            ) : null}
+          </div>
         </>
       )}
     </CartForm>
