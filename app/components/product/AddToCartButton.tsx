@@ -1,16 +1,12 @@
 import { type FetcherWithComponents } from "@remix-run/react";
-import {
-  CartForm,
-  ShopPayButton,
-  type OptimisticCartLineInput,
-} from "@shopify/hydrogen";
+import { CartForm, type OptimisticCartLineInput } from "@shopify/hydrogen";
 import { ShoppingCart } from "lucide-react";
 import { ProductFragment, ProductQuery } from "storefrontapi.generated";
 import { Button } from "../ui/button";
 
 export function AddToCartButton({
   selectedVariant,
-  storeDomain,
+  //storeDomain,
   analytics,
   children,
   disabled,
@@ -54,13 +50,13 @@ export function AddToCartButton({
               {children}
               <ShoppingCart />
             </Button>
-            {selectedVariant ? (
-              <ShopPayButton
-                width="100%"
-                variantIds={array}
-                storeDomain={storeDomain}
-              />
-            ) : null}
+            {/*{selectedVariant ? (*/}
+            {/*  <ShopPayButton*/}
+            {/*    width="100%"*/}
+            {/*    variantIds={array}*/}
+            {/*    storeDomain={storeDomain}*/}
+            {/*  />*/}
+            {/*) : null}*/}
           </div>
         </>
       )}
